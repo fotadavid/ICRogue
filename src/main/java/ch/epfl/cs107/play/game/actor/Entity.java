@@ -13,7 +13,7 @@ public abstract class Entity implements Actor {
     private Vector currentPosition;
     /// Corresponding transformation
     private Transform transform;
-
+    private int a;
 
     /**
      * Default Entity constructor
