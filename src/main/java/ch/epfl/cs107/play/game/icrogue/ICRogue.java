@@ -18,12 +18,12 @@ public class ICRogue extends AreaGame {
     /**
      * Add all the areas
      */
-
-    Level0Room currentRoom;
     private void initLevel(){
+        Level0Room currentRoom;
         DiscreteCoordinates currentRoomCoor = new DiscreteCoordinates(0, 0);
         currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
+
     }
 
     @Override
@@ -40,7 +40,6 @@ public class ICRogue extends AreaGame {
     }
 
     private void initArea(String areaKey) {
-
         Level0Room area = (Level0Room) setCurrentArea(areaKey, true);
         DiscreteCoordinates coords = area.getPlayerSpawnPosition();
         player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
