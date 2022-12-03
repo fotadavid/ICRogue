@@ -23,9 +23,9 @@ public class ICRogue extends AreaGame {
         currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
         Level0Room area = (Level0Room) setCurrentArea(currentRoom.getTitle(), true);
-        //DiscreteCoordinates coords = area.getPlayerSpawnPosition();
-        //player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
-        //player.enterArea(area, coords);
+        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
+        player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
+        player.enterArea(area, coords);
     }
 
     @Override
@@ -37,12 +37,6 @@ public class ICRogue extends AreaGame {
         return false;
     }
 
-    private void initArea(String areaKey) {
-        Level0Room area = (Level0Room) setCurrentArea(areaKey, true);
-        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
-        player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
-        player.enterArea(area, coords);
-    }
     @Override
     /* public void update(float deltaTime) {
         if(player.isWeak()){

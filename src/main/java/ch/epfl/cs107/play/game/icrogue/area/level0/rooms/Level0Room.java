@@ -24,11 +24,11 @@ public class Level0Room extends ICRogueRoom {
     @Override
     public String getTitle() {
         String ret = "icrogue/level0" + roomCoordinates.x + roomCoordinates.y;
-        return ret;
+        return "icrogue/Level0Room";
     }
 
     @Override
-    public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(0, 0);}
+    public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(3, 3);}
 
     protected void createArea() {
         // Base

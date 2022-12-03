@@ -29,8 +29,7 @@ public abstract class ICRogueRoom extends Area {
 
     @Override
     public final float getCameraScaleFactor() {
-
-        return 11;
+        return 10;
     }
 
     public abstract DiscreteCoordinates getPlayerSpawnPosition();
