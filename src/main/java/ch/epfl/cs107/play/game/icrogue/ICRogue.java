@@ -3,6 +3,7 @@ package ch.epfl.cs107.play.game.icrogue;
 import ch.epfl.cs107.play.game.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -35,17 +36,19 @@ public class ICRogue extends AreaGame {
         if (super.begin(window, fileSystem)) {
             initLevel();
             areaIndex = 0;
+            //initArea(String.valueOf(currentRoom));
+           // currentRoom.registerActor(player);
             return true;
         }
         return false;
     }
 
     private void initArea(String areaKey) {
-        Level0Room area = (Level0Room) setCurrentArea(areaKey, true);
+        ICRogueRoom area = (ICRogueRoom) setCurrentArea("icrogue.level0Room", true);
         DiscreteCoordinates coords = area.getPlayerSpawnPosition();
-        player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
+        /*player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
         player.enterArea(area, coords);
-        player.centerCamera();
+        player.centerCamera();*/
     }
     @Override
     public void update(float deltaTime) {
