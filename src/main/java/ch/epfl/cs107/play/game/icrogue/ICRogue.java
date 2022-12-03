@@ -10,30 +10,31 @@ import ch.epfl.cs107.play.window.Window;
 
 public class ICRogue extends AreaGame {
     public final static float CAMERA_SCALE_FACTOR = 13.f;
-
+    public final static String ROOM = "icrogue/Level0Room";
     private ICRoguePlayer player; // creer iCROGUe player
-    private final String[] areas = {"zelda/Chateau1", "zelda/Temple1"};
+    private final String[] areas = {ROOM};
 
     private int areaIndex;
     /**
      * Add all the areas
      */
+    Level0Room currentRoom;
     private void initLevel(){
-        Level0Room currentRoom;
         DiscreteCoordinates currentRoomCoor = new DiscreteCoordinates(0, 0);
         currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
-
+        Level0Room area = (Level0Room) setCurrentArea(currentRoom.getTitle(), true);
+        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
+        //player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
+        //player.enterArea(area, coords);
+        //player.centerCamera();
     }
 
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
-
-
         if (super.begin(window, fileSystem)) {
             initLevel();
             areaIndex = 0;
-            initArea(areas[areaIndex]);
             return true;
         }
         return false;
@@ -45,7 +46,6 @@ public class ICRogue extends AreaGame {
         player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
         player.enterArea(area, coords);
         player.centerCamera();
-
     }
     @Override
     public void update(float deltaTime) {
@@ -56,7 +56,7 @@ public class ICRogue extends AreaGame {
 
     }
 
-    @Override
+    //@Override
     public void end() {
     }
 
