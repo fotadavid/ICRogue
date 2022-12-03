@@ -3,8 +3,10 @@ package ch.epfl.cs107.play.game.icrogue;
 import ch.epfl.cs107.play.game.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
+import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
+import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
+import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Ferme;
 import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Village;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -13,18 +15,18 @@ import ch.epfl.cs107.play.window.Window;
 public class ICRogue extends AreaGame {
     public final static float CAMERA_SCALE_FACTOR = 13.f;
 
-    private ICRoguePlayer player;
-    private final String[] areas = {"icrogue/Level0Room"};
+    private ICRoguePlayer player; // creer iCROGUe player
+    private final String[] areas = {"zelda/Chateau1", "zelda/Temple1"};
 
     private int areaIndex;
     /**
      * Add all the areas
      */
-    private void createAreas(){
 
-        //addArea(new Level0Room());
-        addArea(new Village());
-
+    Level0Room currentroom;
+    private void initLevel(){
+        currentroom = new Level0Room(0,0);
+        addArea(new currentroom());
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ICRogue extends AreaGame {
 
 
         if (super.begin(window, fileSystem)) {
-            createAreas();
+            initLevel();
             areaIndex = 0;
             initArea(areas[areaIndex]);
             return true;
@@ -42,7 +44,7 @@ public class ICRogue extends AreaGame {
 
     private void initArea(String areaKey) {
 
-        ICRogueRoom area = (ICRogueRoom)setCurrentArea(areaKey, true);
+        Level0Room area = (Level0Room) setCurrentArea(areaKey, true);
         DiscreteCoordinates coords = area.getPlayerSpawnPosition();
         player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
         player.enterArea(area, coords);
@@ -63,18 +65,21 @@ public class ICRogue extends AreaGame {
     }
 
     @Override
-    public String getTitle(){
+    public String getTitle() {
+
         return "ICRogue";
     }
+
     protected void switchArea() {
 
         player.leaveArea();
 
         areaIndex = (areaIndex==0) ? 1 : 0;
 
-        ICRogueRoom currentArea = (ICRogueRoom) setCurrentArea(areas[areaIndex], false);
+        Level0Room currentArea = (Level0Room) setCurrentArea(areas[areaIndex], false);
         player.enterArea(currentArea, currentArea.getPlayerSpawnPosition());
 
         player.strengthen();
     }
+
 }
