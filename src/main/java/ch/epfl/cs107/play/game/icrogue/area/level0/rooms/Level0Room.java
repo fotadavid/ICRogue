@@ -1,14 +1,9 @@
 package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
 
-import ch.epfl.cs107.play.game.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
-import ch.epfl.cs107.play.game.tutosSolution.actor.SimpleGhost;
-import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Ferme;
-import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Village;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.math.Vector;
 
 /**
  * Specific area

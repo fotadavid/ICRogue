@@ -1,40 +1,56 @@
-package ch.epfl.cs107.play.game.actor;
+package ch.epfl.cs107.play.game.icrogue.actor;
 
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
-
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-public class ICRoguePlayer extends MovableAreaEntity {
-    private float hp;
+public class ICRoguePlayer extends ICRogueActor {
+
     private TextGraphics message;
-    private Sprite sprite;
+    private Sprite sprite1;
+    private Sprite sprite2;
+    private Sprite sprite3;
+    private Sprite sprite4;
+    private Sprite currentsprite;
+
+    private Fire fire;
+
     /// Animation duration in frame number
-    private final static int MOVE_DURATION = 8;
+    final static int MOVE_DURATION = 8;
     /**
      * Demo actor
      *
      */
+
+
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
-        this.hp = 10;
-        message = new TextGraphics(Integer.toString((int)hp), 0.4f, Color.BLUE);
-        message.setParent(this);
-        message.setAnchor(new Vector(-0.3f, 0.1f));
-        sprite = new Sprite(spriteName, 1.f, 1.f,this);
+        //bas
+        sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
+        // droite
+        sprite2 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 32, 16, 32), new Vector(.15f,-.15f));
+        // haut
+        sprite3 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 64, 16, 32), new Vector(.15f,-.15f));
+        // gauche
+        sprite4 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 96, 16, 32), new Vector(.15f,-.15f));
+        currentsprite = sprite3;
+    }
 
-        resetMotion();
+
+    public void centerCamera() {
+        getOwnerArea().setViewCandidate(this);
     }
 
     /**
@@ -43,11 +59,7 @@ public class ICRoguePlayer extends MovableAreaEntity {
 
     @Override
     public void update(float deltaTime) {
-        if (hp > 0) {
-            hp -=deltaTime;
-            message.setText(Integer.toString((int)hp));
-        }
-        if (hp < 0) hp = 0.f;
+
         Keyboard keyboard= getOwnerArea().getKeyboard();
 
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
@@ -55,16 +67,49 @@ public class ICRoguePlayer extends MovableAreaEntity {
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
 
+        turnIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
+        turnIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
+        turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
+        turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
+
         super.update(deltaTime);
 
     }
+    public void draw(Canvas canvas) {
+        currentsprite.draw(canvas);
+    }
+
+    public void fireBall(Button b) {
+        Keyboard keyboard = getOwnerArea().getKeyboard();
+        fireBall(keyboard.get(Keyboard.X));
+
+        if (b.isDown()) {
+            fire = new Fire(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(fire);
+        }
+    }
+
+
+
+  
+
     /**
      * Orientate and Move this player in the given orientation if the given button is down
      * @param orientation (Orientation): given orientation, not null
      * @param b (Button): button corresponding to the given orientation, not null
      */
+
     private void moveIfPressed(Orientation orientation, Button b){
         if(b.isDown()) {
+            if (!isDisplacementOccurs()) {
+                orientate(orientation);
+                move(MOVE_DURATION);
+            }
+        }
+    }
+
+    private void turnIfPressed(Orientation orientation, Button b) {
+        if (b.isDown()) {
             if (!isDisplacementOccurs()) {
                 orientate(orientation);
                 move(MOVE_DURATION);
@@ -88,22 +133,11 @@ public class ICRoguePlayer extends MovableAreaEntity {
         area.registerActor(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
+
         resetMotion();
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        sprite.draw(canvas);
-        message.draw(canvas);
-    }
 
-    public boolean isWeak() {
-        return (hp <= 0.f);
-    }
-
-    public void strengthen() {
-        hp = 10;
-    }
 
     ///Ghost implements Interactable
 
@@ -129,4 +163,5 @@ public class ICRoguePlayer extends MovableAreaEntity {
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
     }
+
 }
