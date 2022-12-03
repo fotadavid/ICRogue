@@ -9,7 +9,6 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class ICRogue extends AreaGame {
-    public final static float CAMERA_SCALE_FACTOR = 13.f;
     public final static String ROOM = "icrogue/Level0Room";
     private ICRoguePlayer player; // creer iCROGUe player
     private final String[] areas = {ROOM};
@@ -24,17 +23,15 @@ public class ICRogue extends AreaGame {
         currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
         Level0Room area = (Level0Room) setCurrentArea(currentRoom.getTitle(), true);
-        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
+        //DiscreteCoordinates coords = area.getPlayerSpawnPosition();
         //player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
         //player.enterArea(area, coords);
-        //player.centerCamera();
     }
 
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             initLevel();
-            areaIndex = 0;
             return true;
         }
         return false;
@@ -45,16 +42,15 @@ public class ICRogue extends AreaGame {
         DiscreteCoordinates coords = area.getPlayerSpawnPosition();
         player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
         player.enterArea(area, coords);
-        player.centerCamera();
     }
     @Override
-    public void update(float deltaTime) {
+    /* public void update(float deltaTime) {
         if(player.isWeak()){
             switchArea();
         }
         super.update(deltaTime);
 
-    }
+    } */
 
     //@Override
     public void end() {
@@ -66,7 +62,7 @@ public class ICRogue extends AreaGame {
         return "ICRogue";
     }
 
-    protected void switchArea() {
+    /*protected void switchArea() {
 
         player.leaveArea();
 
@@ -76,6 +72,6 @@ public class ICRogue extends AreaGame {
         player.enterArea(currentArea, currentArea.getPlayerSpawnPosition());
 
         player.strengthen();
-    }
+    }*/
 
 }

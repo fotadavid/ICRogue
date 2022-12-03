@@ -11,7 +11,7 @@ public class ICRogueBehavior extends AreaBehavior {
         NONE(0, false),
         GROUND(-16777216, true),
         WALL(-14112955, false),
-        HOLE(-65536, true);
+        HOLE(-65536, true),;
 
         final int type;
         final boolean isWalkable;
