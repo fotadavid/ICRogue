@@ -28,7 +28,6 @@ public class Level0Room extends ICRogueRoom {
 
     @Override
     public DiscreteCoordinates getPlayerSpawnPosition() {
-
         return new DiscreteCoordinates(0, 1);
     }
 

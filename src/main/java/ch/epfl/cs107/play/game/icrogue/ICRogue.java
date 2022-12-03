@@ -21,7 +21,8 @@ public class ICRogue extends AreaGame {
 
     Level0Room currentRoom;
     private void initLevel(){
-        currentRoom = new Level0Room(0,0);
+        DiscreteCoordinates currentRoomCoor = new DiscreteCoordinates(0, 0);
+        currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
     }
 
