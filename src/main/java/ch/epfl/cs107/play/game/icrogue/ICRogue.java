@@ -4,10 +4,6 @@ import ch.epfl.cs107.play.game.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
-import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
-import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
-import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Ferme;
-import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Village;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
@@ -23,10 +19,10 @@ public class ICRogue extends AreaGame {
      * Add all the areas
      */
 
-    Level0Room currentroom;
+    Level0Room currentRoom;
     private void initLevel(){
-        currentroom = new Level0Room(0,0);
-        addArea(new currentroom());
+        currentRoom = new Level0Room(0,0);
+        addArea(currentRoom);
     }
 
     @Override
