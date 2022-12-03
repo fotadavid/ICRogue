@@ -40,9 +40,6 @@ public class ICRoguePlayer extends MovableAreaEntity {
     /**
      * Center the camera on the player
      */
-    public void centerCamera() {
-        getOwnerArea().setViewCandidate(this);
-    }
 
     @Override
     public void update(float deltaTime) {
@@ -89,7 +86,6 @@ public class ICRoguePlayer extends MovableAreaEntity {
      */
     public void enterArea(Area area, DiscreteCoordinates position){
         area.registerActor(this);
-        area.setViewCandidate(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
         resetMotion();
