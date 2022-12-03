@@ -14,25 +14,26 @@ import ch.epfl.cs107.play.math.Vector;
  * Specific area
  */
 public class Level0Room extends ICRogueRoom {
-
-    public Level0Room(DiscreteCoordinates roomCoordinates) {super("icrogue/Level0Room", roomCoordinates);}
+    DiscreteCoordinates roomCoordinates;
+    public Level0Room(DiscreteCoordinates roomCoordinates) {
+        super("icrogue/Level0Room", roomCoordinates);
+        this.roomCoordinates = roomCoordinates;
+    }
 
     public String GetName(){return "icrogue/Level0Room";}
     @Override
     public String getTitle() {
-
-        return "icrogue/level001";
+        String ret = "icrogue/level0" + roomCoordinates.x + roomCoordinates.y;
+        return ret;
     }
 
     @Override
-    public DiscreteCoordinates getPlayerSpawnPosition() {
-        return new DiscreteCoordinates(0, 0);
-    }
+    public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(0, 0);}
 
     protected void createArea() {
         // Base
-        //registerActor(new ICRoguePlayer(this));
-        //registerActor(new Foreground(this));
+        registerActor(new Background(this));
+        registerActor(new Foreground(this));
     }
 }
 

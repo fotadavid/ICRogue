@@ -25,7 +25,7 @@ public abstract class ICRogueRoom extends Area {
      */
     protected abstract void createArea();
 
-    /// EnigmeArea extends Area
+    // EnigmeArea extends Area
 
     @Override
     public final float getCameraScaleFactor() {
@@ -41,7 +41,7 @@ public abstract class ICRogueRoom extends Area {
     public boolean begin(Window window, FileSystem behaviorName) {
         if (super.begin(window, behaviorName)) {
             // Set the behavior map
-            behavior = new ICRogueBehavior(window, "icrogue/Level0Room");
+            behavior = new ICRogueBehavior(window, this.behaviorName);
             setBehavior(behavior);
             createArea();
             return true;
