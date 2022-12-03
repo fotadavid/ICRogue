@@ -29,6 +29,7 @@ public abstract class ICRogueRoom extends Area {
 
     @Override
     public final float getCameraScaleFactor() {
+
         return 11;
     }
 
@@ -37,8 +38,8 @@ public abstract class ICRogueRoom extends Area {
     /// Demo2Area implements Playable
 
     @Override
-    public boolean begin(Window window, FileSystem fileSystem) {
-        if (super.begin(window, fileSystem)) {
+    public boolean begin(Window window, FileSystem behaviorName) {
+        if (super.begin(window, behaviorName)) {
             // Set the behavior map
             behavior = new ICRogueBehavior(window, "icrogue/Level0Room");
             setBehavior(behavior);
@@ -47,4 +48,6 @@ public abstract class ICRogueRoom extends Area {
         }
         return false;
     }
+
 }
+
