@@ -94,4 +94,3 @@ public class ICRogueBehavior extends AreaBehavior {
 
     }
 }
-

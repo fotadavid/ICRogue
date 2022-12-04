@@ -49,9 +49,9 @@ public class ICRoguePlayer extends ICRogueActor {
     }
 
 
-    public void centerCamera() {
+   /* public void centerCamera() {
         getOwnerArea().setViewCandidate(this);
-    }
+    }*/
 
     /**
      * Center the camera on the player
@@ -61,7 +61,6 @@ public class ICRoguePlayer extends ICRogueActor {
     public void update(float deltaTime) {
 
         Keyboard keyboard= getOwnerArea().getKeyboard();
-
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
         moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
@@ -71,20 +70,19 @@ public class ICRoguePlayer extends ICRogueActor {
         turnIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
-
+        fireBall();
         super.update(deltaTime);
 
     }
     public void draw(Canvas canvas) {
         currentsprite.draw(canvas);
     }
-
-    public void fireBall(Button b) {
+    public void fireBall() {
         Keyboard keyboard = getOwnerArea().getKeyboard();
-        fireBall(keyboard.get(Keyboard.X));
-
+        Button b;
+        b = keyboard.get(Keyboard.X);
         if (b.isDown()) {
-            fire = new Fire(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
+            fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
             getOwnerArea().registerActor(fire);
         }
     }
@@ -109,10 +107,18 @@ public class ICRoguePlayer extends ICRogueActor {
     }
 
     private void turnIfPressed(Orientation orientation, Button b) {
+        Keyboard keyboard = getOwnerArea().getKeyboard();
+        if( getOrientation() == Orientation.LEFT )
+            currentsprite = sprite4;
+        else if( getOrientation() == Orientation.RIGHT )
+            currentsprite = sprite2;
+        else if( getOrientation() == Orientation.DOWN )
+            currentsprite = sprite1;
+        else if( getOrientation() == Orientation.UP )
+            currentsprite = sprite3;
         if (b.isDown()) {
             if (!isDisplacementOccurs()) {
                 orientate(orientation);
-                move(MOVE_DURATION);
             }
         }
     }

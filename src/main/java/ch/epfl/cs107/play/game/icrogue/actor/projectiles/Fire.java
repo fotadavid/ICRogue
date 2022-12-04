@@ -39,19 +39,10 @@ public class Fire extends Projectile {
 
     @Override
     public void update(float deltaTime) {
-        keyboard = getOwnerArea().getKeyboard();
         move(5);
         super.update(deltaTime);
     }
 
-    public void moveIfPressed(Orientation orientation, Button b) {
-        if(b.isDown()) {
-            if (!isDisplacementOccurs()) {
-                orientate(orientation);
-                move(MOVE_DURATION);
-            }
-        }
-    }
     @Override
     public void draw(Canvas canvas) {
         fire.draw(canvas);

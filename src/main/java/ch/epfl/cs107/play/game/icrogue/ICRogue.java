@@ -9,7 +9,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
-
+import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,9 +24,6 @@ public class ICRogue extends AreaGame {
      * Add all the areas
      */
     Level0Room currentRoom;
-    private Keyboard keyboard;
-
-
 
     private void initLevel(){
         DiscreteCoordinates currentRoomCoor = new DiscreteCoordinates(0, 0);
@@ -41,26 +38,23 @@ public class ICRogue extends AreaGame {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             initLevel();
-            player.fireBall(keyboard.get(Keyboard.X));
-            //currentRoom.registerActor(super.fire);
             return true;
         }
         return false;
     }
 
-
-    /*public void resetMotion() {
-       //keyboard.get(Keyboard.R);
-       //initLevel();
-    }*/
-
 @Override
     public void update(float deltaTime) {
     super.update(deltaTime);
-    //player.fireBall(keyboard.get(Keyboard.X));
-        //resetMotion();
+    resetMotion();
     }
 
+    public void resetMotion(){
+        Keyboard keyboard = currentRoom.getKeyboard();
+        Button b = keyboard.get(Keyboard.R);
+        if( b.isDown() )
+            initLevel();
+    }
     @Override
     public void end() {
     }
