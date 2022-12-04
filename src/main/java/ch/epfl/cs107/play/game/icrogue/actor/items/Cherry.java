@@ -15,7 +15,7 @@ public class Cherry extends Item{
     private Sprite cherry;
 
 
-    public void Cherry(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Cherry(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         cherry = new Sprite("icrogue/cherry", 0.6f, 0.6f, this);
     }

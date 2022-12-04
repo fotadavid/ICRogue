@@ -14,7 +14,7 @@ public class Staff extends Item{
 
     private Sprite staff;
 
-    public void Staff(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Staff(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         staff = new Sprite("zelda/staff_water.icon", .5f, .5f, this);
     }
