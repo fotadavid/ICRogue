@@ -40,7 +40,7 @@ public class Staff extends Item{
 
     @Override
     public boolean isViewInteractable() {
-        return false;
+        return true;
     }
 
     @Override

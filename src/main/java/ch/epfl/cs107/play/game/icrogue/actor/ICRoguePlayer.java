@@ -2,21 +2,24 @@ package ch.epfl.cs107.play.game.icrogue.actor;
 
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
-import java.awt.*;
+
 import java.util.Collections;
 import java.util.List;
 
-public class ICRoguePlayer extends ICRogueActor {
+public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     private TextGraphics message;
     private Sprite sprite1;
@@ -94,9 +97,6 @@ public class ICRoguePlayer extends ICRogueActor {
     }
 
 
-
-  
-
     /**
      * Orientate and Move this player in the given orientation if the given button is down
      * @param orientation (Orientation): given orientation, not null
@@ -147,9 +147,6 @@ public class ICRoguePlayer extends ICRogueActor {
     }
 
 
-
-    ///Ghost implements Interactable
-
     @Override
     public boolean takeCellSpace() {
         return true;
@@ -167,6 +164,31 @@ public class ICRoguePlayer extends ICRogueActor {
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
+
+    public List<DiscreteCoordinates> getFieldOfViewCells(){
+        return Collections.singletonList (getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
+    }
+
+    public boolean wantsCellInteraction() {
+        return true;
+    }
+
+    @Override
+    public boolean wantsViewInteraction() {
+        Keyboard  keyboard = getOwnerArea().getKeyboard();
+        Button b = keyboard.get(keyboard.W);
+        if( b.isDown() )
+            return true;
+        else
+            return false;
+    }
+    public void interactWith(Interactable other, boolean isCellInteraction) {
+        Keyboard  keyboard = getOwnerArea().getKeyboard();
+        Button b = keyboard.get(keyboard.W);
+        if(isCellInteraction) {
+
+        }
     }
 
     @Override
