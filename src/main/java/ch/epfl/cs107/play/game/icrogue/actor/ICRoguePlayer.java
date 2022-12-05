@@ -200,12 +200,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private ICRogueInteractionHandler handler;
     private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
         public void interactWith(Cherry cherry, boolean isCellInteraction) {
-            if(isCellInteraction) {
                 cherry.acceptInteraction(handler, isCellInteraction);
-            }
         }
         public void interactWith(Staff staff, boolean isCellInteraction) {
-
+            if(wantsViewInteraction())
+                staff.acceptInteraction(handler, isCellInteraction);
         }
     }
 
