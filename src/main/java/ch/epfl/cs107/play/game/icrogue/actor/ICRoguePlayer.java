@@ -21,6 +21,9 @@ public class ICRoguePlayer extends ICRogueActor {
     private TextGraphics message;
     private Sprite sprite1;
     private Sprite sprite2;
+    private Sprite sprite11;
+    private Sprite sprite12;
+    private Sprite sprite13;
     private Sprite sprite3;
     private Sprite sprite4;
     private Sprite currentsprite;
@@ -37,14 +40,17 @@ public class ICRoguePlayer extends ICRogueActor {
 
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
+
         //bas
         sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
+        sprite11 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 0, 16, 32), new Vector(.15f, -.15f));
         // droite
         sprite2 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 32, 16, 32), new Vector(.15f,-.15f));
         // haut
         sprite3 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 64, 16, 32), new Vector(.15f,-.15f));
         // gauche
         sprite4 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 96, 16, 32), new Vector(.15f,-.15f));
+
         currentsprite = sprite3;
     }
 
@@ -81,7 +87,7 @@ public class ICRoguePlayer extends ICRogueActor {
         Keyboard keyboard = getOwnerArea().getKeyboard();
         Button b;
         b = keyboard.get(Keyboard.X);
-        if (b.isDown()) {
+        if (b.isReleased()) {
             fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
             getOwnerArea().registerActor(fire);
         }
@@ -107,7 +113,6 @@ public class ICRoguePlayer extends ICRogueActor {
     }
 
     private void turnIfPressed(Orientation orientation, Button b) {
-        Keyboard keyboard = getOwnerArea().getKeyboard();
         if( getOrientation() == Orientation.LEFT )
             currentsprite = sprite4;
         else if( getOrientation() == Orientation.RIGHT )
@@ -116,11 +121,9 @@ public class ICRoguePlayer extends ICRogueActor {
             currentsprite = sprite1;
         else if( getOrientation() == Orientation.UP )
             currentsprite = sprite3;
-        if (b.isDown()) {
-            if (!isDisplacementOccurs()) {
+        if (b.isDown())
+            if (!isDisplacementOccurs())
                 orientate(orientation);
-            }
-        }
     }
 
     /**
