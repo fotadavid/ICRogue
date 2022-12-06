@@ -18,7 +18,7 @@ public abstract class Item extends CollectableAreaEntity {
         return true;
     }
 
-    public void update() {}
+    public void update(){}
 
     @Override
     public boolean isViewInteractable() {

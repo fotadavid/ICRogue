@@ -1,9 +1,11 @@
 package ch.epfl.cs107.play.game.icrogue.actor.projectiles;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -43,6 +45,8 @@ public class Fire extends Projectile {
     public void update(float deltaTime) {
         move(5);
         super.update(deltaTime);
+        if(isConsumed())
+            getOwnerArea().unregisterActor(this);
     }
 
     @Override
@@ -58,9 +62,24 @@ public class Fire extends Projectile {
     public boolean takeCellSpace() {
         return false;
     }
+    public void interactWith(Interactable other, boolean isCellInteraction )
+    {
+        other.acceptInteraction(handler, isCellInteraction);
+    }
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
-
+    ICRogueFireInteractionHandler handler = new ICRogueFireInteractionHandler();
+    private  class ICRogueFireInteractionHandler implements ICRogueInteractionHandler
+    {
+        public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction)
+        {
+            switch(cell.getType())
+            {
+                case WALL -> consume();
+                case HOLE -> consume();
+            }
+        }
+    }
 
 }

@@ -27,7 +27,7 @@ public class Cherry extends Item{
     }
 
     @Override
-    public void draw(Canvas canvas) {cherry.draw(canvas); }
+    public void draw(Canvas canvas) {cherry.draw(canvas);}
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -52,7 +52,7 @@ public class Cherry extends Item{
 
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return true;
     }
 }
 

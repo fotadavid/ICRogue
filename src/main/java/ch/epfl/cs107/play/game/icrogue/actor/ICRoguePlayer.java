@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -74,7 +75,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     @Override
     public void update(float deltaTime) {
 
-        Keyboard keyboard= getOwnerArea().getKeyboard();
+        Keyboard keyboard = getOwnerArea().getKeyboard();
+        Button down = keyboard.get(Keyboard.DOWN);
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
         moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
@@ -85,7 +87,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
-        arrayIndex = (arrayIndex+1)%4;
+        arrayIndex = (arrayIndex + 1) % 4;
         super.update(deltaTime);
 
     }
@@ -190,24 +192,22 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         else
             return false;
     }
+    public ICRoguePlayerInteractionHandler handler = new ICRoguePlayerInteractionHandler();
     public void interactWith(Interactable other, boolean isCellInteraction) {
-        Keyboard  keyboard = getOwnerArea().getKeyboard();
-        Button b = keyboard.get(keyboard.W);
-        if(isCellInteraction) {
-
+        other.acceptInteraction(handler, isCellInteraction);
+    }
+    private static class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
+        public void interactWith(Cherry cherry, boolean isCellInteraction)
+        {
+            if(isCellInteraction)
+                cherry.collect();
+        }
+        public void interactWith(Staff staff, boolean isCellInteraction)
+        {
+            if(!isCellInteraction)
+                staff.collect();
         }
     }
-    private ICRogueInteractionHandler handler;
-    private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
-        public void interactWith(Cherry cherry, boolean isCellInteraction) {
-                cherry.acceptInteraction(handler, isCellInteraction);
-        }
-        public void interactWith(Staff staff, boolean isCellInteraction) {
-            if(wantsViewInteraction())
-                staff.acceptInteraction(handler, isCellInteraction);
-        }
-    }
-
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
     }

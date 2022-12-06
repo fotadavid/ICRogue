@@ -1,5 +1,6 @@
 package ch.epfl.cs107.play.game.icrogue.actor.projectiles;
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -8,7 +9,7 @@ import ch.epfl.cs107.play.window.Button;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Projectile extends ICRogueActor implements Consumable {
+public abstract class Projectile extends ICRogueActor implements Interactor {
     /**
      * Default MovableAreaEntity constructor
      *
@@ -20,26 +21,20 @@ public abstract class Projectile extends ICRogueActor implements Consumable {
 
     private int DEFAULT_MOVE_DURATION = 10;
     private int DEFAULT_IMAGE = 1;
+    private int moveDuration;
+    private boolean isConsumed;
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
     }
 
     public void update() {}
-    public void moveIfPressed(Orientation orientation, Button b) {
-        if (b.isDown()) {
-            if (!isDisplacementOccurs()) {
-                orientate(orientation);
-                move(DEFAULT_MOVE_DURATION);
-            }
-        }
+
+    public void consume() {
+        isConsumed = true;
     }
 
-    @Override
-    public void consume() {}
-
-    @Override
     public boolean isConsumed() {
-        return true;
+        return isConsumed;
     }
 
     @Override
@@ -52,8 +47,8 @@ public abstract class Projectile extends ICRogueActor implements Consumable {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
-    void getFieldOfViewCells() {
-        Collections.singletonList(getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
+    public List<DiscreteCoordinates>getFieldOfViewCells() {
+        return Collections.singletonList(getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
     }
 
     public boolean wantsCellInteraction() {

@@ -37,9 +37,9 @@ public abstract class CollectableAreaEntity extends AreaEntity{
 
     /** Collect the object (remove it form the area actor list and set flag to true) */
     public void collect() {
-        if (!isCollected) {
+        if (isCollected) {
             isCollected = getOwnerArea().unregisterActor(this);
-        }
+        }else isCollected = true;
     }
 
     public boolean isCollected(){
