@@ -35,7 +35,7 @@ public class Staff extends Item{
 
     @Override
     public boolean takeCellSpace() {
-        return false;
+        return true;
     }
 
 

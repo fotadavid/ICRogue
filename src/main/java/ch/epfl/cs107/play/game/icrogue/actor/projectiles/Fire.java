@@ -76,8 +76,7 @@ public class Fire extends Projectile {
         {
             switch(cell.getType())
             {
-                case WALL -> consume();
-                case HOLE -> consume();
+                case WALL, HOLE -> consume();
             }
         }
     }

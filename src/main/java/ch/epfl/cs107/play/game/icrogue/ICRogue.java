@@ -52,8 +52,9 @@ public class ICRogue extends AreaGame {
     public void resetMotion(){
         Keyboard keyboard = currentRoom.getKeyboard();
         Button b = keyboard.get(Keyboard.R);
-        if( b.isDown() )
+        if( b.isDown() ) {
             initLevel();
+        }
     }
     @Override
     public void end() {

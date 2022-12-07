@@ -1,8 +1,13 @@
 package ch.epfl.cs107.play.game.icrogue;
 
+import ch.epfl.cs107.play.game.actor.Entity;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.window.Window;
 
@@ -77,6 +82,9 @@ public class ICRogueBehavior extends AreaBehavior {
         }
         @Override
         protected boolean canEnter(Interactable entity) {
+            for(Interactable object : entities)
+                if(object.takeCellSpace() && object.getClass() != ICRoguePlayer.class)
+                    return false;
             return type.isWalkable;
         }
 

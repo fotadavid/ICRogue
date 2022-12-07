@@ -24,15 +24,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
-
+    private boolean StaffCollection = false;
     private TextGraphics message;
-    private Sprite sprite1;
-    private Sprite sprite2;
-    private Sprite sprite11;
-    private Sprite sprite12;
-    private Sprite sprite13;
-    private Sprite sprite3;
-    private Sprite sprite4;
+    private Sprite sprite1, sprite11, sprite12, sprite13, sprite2, sprite21, sprite22, sprite23,  sprite3,  sprite31,  sprite32, sprite33, sprite4, sprite41, sprite42, sprite43;
     private Sprite currentsprite;
 
     private Fire fire;
@@ -44,7 +38,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      *
      */
     private int arrayIndex = 0;
-    private Sprite[] movementArray1;
+    private Sprite[] movementArray1, movementArray2, movementArray3, movementArray4;
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
         //bas
@@ -55,11 +49,22 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         movementArray1 = new Sprite[]{sprite1, sprite11, sprite12, sprite13};
         // droite
         sprite2 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 32, 16, 32), new Vector(.15f,-.15f));
+        sprite21 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 32, 16, 33), new Vector(.15f,-.15f));
+        sprite22 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 32, 16, 32), new Vector(.15f,-.15f));
+        sprite23 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(64, 32, 16, 33), new Vector(.15f,-.15f));
+        movementArray2 = new Sprite[]{sprite2, sprite21, sprite22, sprite23};
         // haut
         sprite3 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 64, 16, 32), new Vector(.15f,-.15f));
+        sprite31 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 64, 16, 33), new Vector(.15f,-.15f));
+        sprite32 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 64, 16, 32), new Vector(.15f,-.15f));
+        sprite33 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(64, 64, 16, 33), new Vector(.15f,-.15f));
+        movementArray3 = new Sprite[]{sprite3, sprite31, sprite32, sprite33};
         // gauche
         sprite4 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 96, 16, 32), new Vector(.15f,-.15f));
-
+        sprite41 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 96, 16, 33), new Vector(.15f,-.15f));
+        sprite42 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 96, 16, 32), new Vector(.15f,-.15f));
+        sprite43 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(64, 96, 16, 33), new Vector(.15f,-.15f));
+        movementArray4 = new Sprite[]{sprite4, sprite41, sprite42, sprite43};
         currentsprite = sprite3;
     }
 
@@ -77,6 +82,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         Keyboard keyboard = getOwnerArea().getKeyboard();
         Button down = keyboard.get(Keyboard.DOWN);
+        Button right = keyboard.get(Keyboard.RIGHT);
+        Button up = keyboard.get(Keyboard.UP);
+        Button left = keyboard.get(Keyboard.LEFT);
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
         moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
@@ -87,7 +95,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
-        arrayIndex = (arrayIndex + 1) % 4;
+        if( down.isDown() || right.isDown() || up.isDown() || left.isDown() )
+            arrayIndex = (arrayIndex + 1) % 4;
+        if(down.isReleased() || right.isReleased() || up.isReleased() || left.isReleased())
+            arrayIndex = 0;
         super.update(deltaTime);
 
     }
@@ -98,7 +109,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         Keyboard keyboard = getOwnerArea().getKeyboard();
         Button b;
         b = keyboard.get(Keyboard.X);
-        if (b.isReleased()) {
+        if (b.isPressed() && StaffCollection) {
             fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
             getOwnerArea().registerActor(fire);
         }
@@ -122,14 +133,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     private void turnIfPressed(Orientation orientation, Button b) {
         if( getOrientation() == Orientation.LEFT )
-            currentsprite = sprite4;
+            currentsprite = movementArray4[arrayIndex];
         else if( getOrientation() == Orientation.RIGHT )
-            currentsprite = sprite2;
+            currentsprite = movementArray2[arrayIndex];
         else if( getOrientation() == Orientation.DOWN ) {
             currentsprite = movementArray1[arrayIndex];
         }
         else if( getOrientation() == Orientation.UP )
-            currentsprite = sprite3;
+            currentsprite = movementArray3[arrayIndex];
         if (b.isDown())
             if (!isDisplacementOccurs())
                 orientate(orientation);
@@ -158,7 +169,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     @Override
     public boolean takeCellSpace() {
-        return true;
+        return false;
     }
 
     @Override
@@ -196,7 +207,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
     }
-    private static class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
+    private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
         public void interactWith(Cherry cherry, boolean isCellInteraction)
         {
             if(isCellInteraction)
@@ -204,8 +215,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         public void interactWith(Staff staff, boolean isCellInteraction)
         {
-            if(!isCellInteraction)
+            if(!isCellInteraction) {
                 staff.collect();
+                StaffCollection = true;
+            }
         }
     }
     @Override
