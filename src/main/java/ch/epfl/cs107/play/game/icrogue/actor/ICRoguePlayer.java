@@ -115,7 +115,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
-
     /**
      * Orientate and Move this player in the given orientation if the given button is down
      * @param orientation (Orientation): given orientation, not null
