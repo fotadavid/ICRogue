@@ -39,6 +39,7 @@ public class Connector extends AreaEntity implements Interactable {
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
         currentState = invisible;
     }
+
     public DiscreteCoordinates getCoordinates(){return coordinates;}
 
     public String getDestination() {
@@ -53,8 +54,8 @@ public class Connector extends AreaEntity implements Interactable {
     @Override
     public boolean takeCellSpace() {
         if(!this.getType().equals(ConnectorType.OPEN))
-            return false;
-        else  return true;
+            return true;
+        else  return false;
     }
 
     @Override
