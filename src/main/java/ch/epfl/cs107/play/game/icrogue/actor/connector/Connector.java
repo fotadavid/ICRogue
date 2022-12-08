@@ -18,6 +18,7 @@ public class Connector extends AreaEntity implements Interactable {
 
     private Sprite invisible, closed, locked, currentState;
     private int NO_KEY_ID;
+    private DiscreteCoordinates coordinates;
     private String destination;
     public enum ConnectorType{
         OPEN,
@@ -26,9 +27,10 @@ public class Connector extends AreaEntity implements Interactable {
         INVISIBLE;
     }
     public ConnectorType getType(){return type;}
-    private ConnectorType type;
-    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates, ConnectorType type) {
+    private ConnectorType type = ConnectorType.INVISIBLE;
+    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates) {
         super(area, orientation, coordinates);
+        this.coordinates = coordinates;
         invisible = new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
         closed = new Sprite("icrogue/door_"+orientation.ordinal(),
@@ -36,14 +38,8 @@ public class Connector extends AreaEntity implements Interactable {
         locked = new Sprite("icrogue/lockedDoor_"+orientation.ordinal(),
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
         currentState = invisible;
-        if( type.equals(ConnectorType.INVISIBLE) )
-            currentState = invisible;
-        else if( type.equals(ConnectorType.LOCKED) )
-            currentState = locked;
-        else if( type.equals(ConnectorType.CLOSED) )
-            currentState = closed;
-        this.type = type;
     }
+    public DiscreteCoordinates getCoordinates(){return coordinates;}
 
     public String getDestination() {
         return destination;
@@ -78,8 +74,16 @@ public class Connector extends AreaEntity implements Interactable {
 
     @Override
     public void draw(Canvas canvas) {
-        if(!this.getType().equals(ConnectorType.OPEN))
-            currentState.draw(canvas);
+        if( type.equals(ConnectorType.INVISIBLE) )
+            invisible.draw(canvas);
+        else if( type.equals(ConnectorType.LOCKED) )
+            locked.draw(canvas);
+        else if( type.equals(ConnectorType.CLOSED) )
+            closed.draw(canvas);
+    }
+
+    public void setCurrentState(ConnectorType type){
+        this.type = type;
     }
 }
 

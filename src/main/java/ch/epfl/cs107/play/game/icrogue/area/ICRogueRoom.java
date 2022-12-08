@@ -3,18 +3,22 @@ package ch.epfl.cs107.play.game.icrogue.area;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
+import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ICRogueRoom extends Area {
 
     private ICRogueBehavior behavior;
     private String behaviorName;
+    private List<Connector> connectors = new ArrayList<Connector>();
     private DiscreteCoordinates roomCoordinates;
     private List<DiscreteCoordinates> connectorsCoordinates;
     private List<Orientation> orientations;
@@ -24,13 +28,19 @@ public abstract class ICRogueRoom extends Area {
         this.roomCoordinates = roomCoordinates;
         this.connectorsCoordinates = connectorsCoordinates;
         this.orientations = orientations;
+        for( int i = 0; i < connectorsCoordinates.size(); i++ ) {
+            connectors.add(new Connector(this, orientations.get(i), connectorsCoordinates.get(i)));
+        }
     }
     /**
      * Create the area by adding it all actors
      * called by begin method
      * Note it set the Behavior as needed !
      */
-    protected abstract void createArea();
+    protected void createArea(){
+        for(Connector connector : connectors)
+            registerActor(connector);
+    };
 
     // EnigmeArea extends Area
 
@@ -41,7 +51,21 @@ public abstract class ICRogueRoom extends Area {
 
     public abstract DiscreteCoordinates getPlayerSpawnPosition();
 
-    /// Demo2Area implements Playable
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        Keyboard keyboard = this.getKeyboard();
+         if(keyboard.get(Keyboard.O).isPressed())
+            for(Connector connector : connectors)
+                connector.setCurrentState(Connector.ConnectorType.OPEN);
+         else if(keyboard.get(Keyboard.T).isPressed())
+             for(Connector connector : connectors)
+                 connector.setCurrentState(Connector.ConnectorType.CLOSED);
+         else if(keyboard.get(Keyboard.L).isPressed())
+             for(Connector connector : connectors)
+                 if( connector.getCoordinates().equals(new DiscreteCoordinates(0, 4)))
+                     connector.setCurrentState(Connector.ConnectorType.LOCKED);
+    }
 
     @Override
     public boolean begin(Window window, FileSystem behaviorName) {

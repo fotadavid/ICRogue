@@ -30,9 +30,8 @@ public class ICRogue extends AreaGame {
         currentRoom = new Level0Room(currentRoomCoor);
         addArea(currentRoom);
         Level0Room area = (Level0Room) setCurrentArea(currentRoom.getTitle(), true);
-        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
-        player = new ICRoguePlayer(area, Orientation.DOWN, coords,"ghost.1");
-        player.enterArea(area, coords);
+        player = new ICRoguePlayer(area, Orientation.DOWN, new DiscreteCoordinates(2, 2),"zelda/player");
+        player.enterArea(area, new DiscreteCoordinates(2, 2));
     }
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
