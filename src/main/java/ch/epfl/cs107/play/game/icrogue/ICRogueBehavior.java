@@ -55,19 +55,10 @@ public class ICRogueBehavior extends AreaBehavior {
         }
     }
 
-    /**
-     * Cell adapted to the Tuto2 game
-     */
     public class ICRogueCell extends Cell {
         /// Type of the cell following the enum
         private final ICRogueCellType type;
 
-        /**
-         * Default Tuto2Cell Constructor
-         * @param x (int): x coordinate of the cell
-         * @param y (int): y coordinate of the cell
-         * @param type (EnigmeCellType), not null
-         */
         public  ICRogueCell(int x, int y, ICRogueCellType type){
             super(x, y);
             this.type = type;

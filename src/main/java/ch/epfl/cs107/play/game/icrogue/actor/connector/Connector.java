@@ -11,16 +11,38 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class Connector extends AreaEntity implements Interactable {
 
-    private Sprite invisible, closed, locked;
+    private Sprite invisible, closed, locked, currentState;
     private int NO_KEY_ID;
     private String destination;
-
-    public Connector(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
-        super(owner, orientation, coordinates);
+    public enum ConnectorType{
+        OPEN,
+        CLOSED,
+        LOCKED,
+        INVISIBLE;
+    }
+    public ConnectorType getType(){return type;}
+    private ConnectorType type;
+    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates, ConnectorType type) {
+        super(area, orientation, coordinates);
+        invisible = new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        closed = new Sprite("icrogue/door_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        locked = new Sprite("icrogue/lockedDoor_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        currentState = invisible;
+        if( type.equals(ConnectorType.INVISIBLE) )
+            currentState = invisible;
+        else if( type.equals(ConnectorType.LOCKED) )
+            currentState = locked;
+        else if( type.equals(ConnectorType.CLOSED) )
+            currentState = closed;
+        this.type = type;
     }
 
     public String getDestination() {
@@ -34,7 +56,9 @@ public class Connector extends AreaEntity implements Interactable {
 
     @Override
     public boolean takeCellSpace() {
-        return true;
+        if(!this.getType().equals(ConnectorType.OPEN))
+            return false;
+        else  return true;
     }
 
     @Override
@@ -54,7 +78,8 @@ public class Connector extends AreaEntity implements Interactable {
 
     @Override
     public void draw(Canvas canvas) {
-
+        if(!this.getType().equals(ConnectorType.OPEN))
+            currentState.draw(canvas);
     }
 }
 
