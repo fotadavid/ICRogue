@@ -31,9 +31,9 @@ public class ICRogue extends AreaGame {
 
     private void initLevel(){
         currentLevel = new Level0();
+        currentLevel.generateFixedMap();
         currentLevel.addAreas(this);
-        //currentRoom
-        Level0Room area = (Level0Room) setCurrentArea(currentRoom.getTitle(), true);
+        Level0Room area = (Level0Room) setCurrentArea(currentLevel.getTitle(), true);
         player = new ICRoguePlayer(area, Orientation.DOWN, new DiscreteCoordinates(2, 2),"zelda/player");
         player.enterArea(area, new DiscreteCoordinates(2, 2));
     }
@@ -53,9 +53,10 @@ public class ICRogue extends AreaGame {
     }
 
     public void resetMotion(){
-        Keyboard keyboard = currentRoom.getKeyboard();
+        Keyboard keyboard = getWindow().getKeyboard();
         Button b = keyboard.get(Keyboard.R);
         if( b.isDown() ) {
+            player.leaveArea();
             initLevel();
         }
     }

@@ -17,14 +17,13 @@ public class Key extends Item {
     {
         super(area, orientation, position);
         this.keyId = value;
-
     }
 
     @Override
     public void draw(Canvas canvas) {
-
+        key.draw(canvas);
     }
-
+    public int getKeyId(){return keyId;}
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return null;
@@ -34,7 +33,8 @@ public class Key extends Item {
     public boolean takeCellSpace() {
         return false;
     }
-
+    @Override
+    public boolean isViewInteractable() {return true;}
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);

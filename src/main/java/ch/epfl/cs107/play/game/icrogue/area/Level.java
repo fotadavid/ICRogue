@@ -34,8 +34,9 @@ public abstract class Level {
     public void addAreas(ICRogue game)
     {
         for( int i = 0; i < map.length; i++ )
-            for( int j = 0; i < map[0].length; j++ )
-                game.addArea(map[i][j]);
+            for( int j = 0; j < map[0].length; j++ )
+                if(map[i][j] != null)
+                    game.addArea(map[i][j]);
     }
 
     public void setDepartureRoom(DiscreteCoordinates departure) {
@@ -65,6 +66,6 @@ public abstract class Level {
         return map;
     }
 
-    abstract void generateFixedMap();
-    abstract String getTitle();
+    public abstract void generateFixedMap();
+    public abstract String getTitle();
 }

@@ -11,7 +11,7 @@ public class Level0 extends Level{
     private int PART_1_KEY_ID = 2;
     private int BOSS_KEY_ID = 3;
     public String getTitle(){
-        return "Level0";
+        return "icrogue/level010";
     }
     public void generateFixedMap(){
         //generateMap1();
