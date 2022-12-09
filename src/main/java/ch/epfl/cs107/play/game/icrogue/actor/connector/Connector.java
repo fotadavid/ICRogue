@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
+import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Connector extends AreaEntity implements Interactable {
 
     private Sprite invisible, closed, locked, currentState;
-    private int NO_KEY_ID;
+    private int NO_KEY_ID = 67, keyId;
     private DiscreteCoordinates coordinates;
     private String destination;
     public enum ConnectorType{
@@ -28,8 +29,9 @@ public class Connector extends AreaEntity implements Interactable {
     }
     public ConnectorType getType(){return type;}
     private ConnectorType type = ConnectorType.INVISIBLE;
-    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates) {
+    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates, String destination) {
         super(area, orientation, coordinates);
+        this.destination = destination;
         this.coordinates = coordinates;
         invisible = new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
@@ -39,8 +41,22 @@ public class Connector extends AreaEntity implements Interactable {
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
         currentState = invisible;
     }
-
+    public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates, String destination, int keyId) {
+        super(area, orientation, coordinates);
+        this.keyId = keyId;
+        this.destination = destination;
+        this.coordinates = coordinates;
+        invisible = new Sprite("icrogue/invisibleDoor_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        closed = new Sprite("icrogue/door_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        locked = new Sprite("icrogue/lockedDoor_"+orientation.ordinal(),
+                (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
+        currentState = invisible;
+    }
     public DiscreteCoordinates getCoordinates(){return coordinates;}
+
+    public void setDestination(String destination) {this.destination = destination;}
 
     public String getDestination() {
         return destination;
@@ -57,6 +73,7 @@ public class Connector extends AreaEntity implements Interactable {
             return true;
         else  return false;
     }
+    public void setKeyId(int keyId) {this.keyId = keyId;}
 
     @Override
     public boolean isCellInteractable() {

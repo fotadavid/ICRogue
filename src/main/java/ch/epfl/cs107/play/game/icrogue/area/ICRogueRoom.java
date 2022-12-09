@@ -22,16 +22,31 @@ public abstract class ICRogueRoom extends Area {
     private DiscreteCoordinates roomCoordinates;
     private List<DiscreteCoordinates> connectorsCoordinates;
     private List<Orientation> orientations;
-    public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates, List<Orientation> orientations, String behaviorName, DiscreteCoordinates roomCoordinates )
+    private List <String> connectorDestinationRooms;
+    public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates, List<Orientation> orientations,
+                       List <String> connectorDestinationRooms, String behaviorName, DiscreteCoordinates roomCoordinates)
     {
         this.behaviorName = behaviorName;
         this.roomCoordinates = roomCoordinates;
         this.connectorsCoordinates = connectorsCoordinates;
         this.orientations = orientations;
+        this.connectorDestinationRooms = connectorDestinationRooms;
         for( int i = 0; i < connectorsCoordinates.size(); i++ ) {
-            connectors.add(new Connector(this, orientations.get(i), connectorsCoordinates.get(i)));
+            connectors.add(new Connector(this, orientations.get(i), connectorsCoordinates.get(i), connectorDestinationRooms.get(i)));
         }
     }
+    public List<Connector> getConnectors(){
+        return connectors;
+    }
+
+    public void setConnectorDestinationRoom(int index, String destinationRoom) {
+        connectorDestinationRooms.set(index, destinationRoom);
+    }
+
+    public void setConnectorsKeys(int key){
+
+    }
+
     /**
      * Create the area by adding it all actors
      * called by begin method

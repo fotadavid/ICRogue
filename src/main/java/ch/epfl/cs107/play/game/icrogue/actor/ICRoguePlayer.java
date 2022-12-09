@@ -32,7 +32,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Fire fire;
 
     /// Animation duration in frame number
-    final static int MOVE_DURATION = 8;
+    final static int MOVE_DURATION = 6;
     /**
      * Demo actor
      *

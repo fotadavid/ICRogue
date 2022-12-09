@@ -17,26 +17,32 @@ import java.util.List;
  */
 public class Level0Room extends ICRogueRoom {
     DiscreteCoordinates roomCoordinates;
+    public final static String behaviorName = "icrogue/level0Room";
     public enum Level0Connectors implements ConnectorInRoom{
 
-        W(new DiscreteCoordinates(0, 4), new DiscreteCoordinates(8, 5), Orientation.RIGHT),
-        S(new DiscreteCoordinates(4, 0), new DiscreteCoordinates(5, 8), Orientation.UP),
-        E(new DiscreteCoordinates(9, 4), new DiscreteCoordinates(1, 5), Orientation.LEFT),
-        N(new DiscreteCoordinates(4, 9), new DiscreteCoordinates(5, 1), Orientation.DOWN);
+        W(new DiscreteCoordinates(0, 4), new DiscreteCoordinates(8, 5), Orientation.RIGHT, "icrogue/level0room"),
+        S(new DiscreteCoordinates(4, 0), new DiscreteCoordinates(5, 8), Orientation.UP, "icrogue/level0room"),
+        E(new DiscreteCoordinates(9, 4), new DiscreteCoordinates(1, 5), Orientation.LEFT, "icrogue/level0room"),
+        N(new DiscreteCoordinates(4, 9), new DiscreteCoordinates(5, 1), Orientation.DOWN, "icrogue/level0room");
         private final DiscreteCoordinates position;
         private final DiscreteCoordinates destination;
         private final Orientation orientation;
-        private Level0Connectors(DiscreteCoordinates position, DiscreteCoordinates destination, Orientation orientation)
+        private String destinationRoom;
+        private Level0Connectors(DiscreteCoordinates position, DiscreteCoordinates destination, Orientation orientation, String destinationRoom)
         {
             this.position = position;
             this.destination = destination;
             this.orientation = orientation;
+            this.destinationRoom = destinationRoom;
         }
         public int getIndex(){
             return this.ordinal();
         }
         public DiscreteCoordinates getDestination(){
             return destination;
+        }
+        public String getDestinationRoom(){
+            return destinationRoom;
         }
     }
     private static List<DiscreteCoordinates> getConnectorsCoordinates(){
@@ -52,8 +58,17 @@ public class Level0Room extends ICRogueRoom {
         return orientations;
     }
 
+    private static List<String> getConnectorDestinationNames(){
+        ArrayList<String> connectorsDestinationRooms = new ArrayList<String>();
+        for( Level0Connectors level0Connectors : Level0Connectors.values())
+            connectorsDestinationRooms.add(level0Connectors.destinationRoom);
+        return connectorsDestinationRooms;
+    }
+    private static String getBehaviorName(){
+        return behaviorName;
+    }
     public Level0Room(DiscreteCoordinates roomCoordinates) {
-        super( getConnectorsCoordinates(), getConnectorOrientations(),  "icrogue/Level0Room", roomCoordinates );
+        super( getConnectorsCoordinates(), getConnectorOrientations(),  getConnectorDestinationNames(), getBehaviorName(), roomCoordinates );
         this.roomCoordinates = roomCoordinates;
     }
 
@@ -61,7 +76,7 @@ public class Level0Room extends ICRogueRoom {
     @Override
     public String getTitle() {
         String ret = "icrogue/level0" + roomCoordinates.x + roomCoordinates.y;
-        return "icrogue/Level0Room";
+        return ret;
     }
 
     @Override
@@ -70,9 +85,9 @@ public class Level0Room extends ICRogueRoom {
     protected void createArea() {
         // Base
         super.createArea();
-        registerActor(new Background(this));
-        registerActor(new Cherry(this, Orientation.DOWN, new DiscreteCoordinates(6, 3)));
-        registerActor((new Staff(this, Orientation.DOWN, new DiscreteCoordinates(4, 3))));
+        registerActor(new Background(this, getBehaviorName()));
+        //registerActor(new Cherry(this, Orientation.DOWN, new DiscreteCoordinates(6, 3)));
+        //registerActor((new Staff(this, Orientation.DOWN, new DiscreteCoordinates(4, 3))));
     }
 
 }

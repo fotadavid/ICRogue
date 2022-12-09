@@ -11,12 +11,12 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.List;
 
 public class Key extends Item {
-    private int value;
+    private int keyId;
     private Sprite key;
     public Key(Area area, Orientation orientation, DiscreteCoordinates position, int value)
     {
         super(area, orientation, position);
-        this.value = value;
+        this.keyId = value;
 
     }
 
