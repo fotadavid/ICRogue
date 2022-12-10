@@ -49,6 +49,8 @@ public class ICRogue extends AreaGame {
 @Override
     public void update(float deltaTime) {
     super.update(deltaTime);
+    if(player.isTransitioning())
+        switchRoom();
     resetMotion();
     }
 
@@ -70,17 +72,13 @@ public class ICRogue extends AreaGame {
         return "ICRogue";
     }
 
-    /*protected void switchArea() {
-
+    protected void switchRoom()
+    {
         player.leaveArea();
-
-        areaIndex = (areaIndex==0) ? 1 : 0;
-
-        Level0Room currentArea = (Level0Room) setCurrentArea(areas[areaIndex], false);
-        player.enterArea(currentArea, currentArea.getPlayerSpawnPosition());
-
-        player.strengthen();
-    }*/
+        player.setTransitionStateToFalse();
+        Level0Room area = (Level0Room) setCurrentArea(player.getDestination(), true);
+        player.enterArea(area, area.getPlayerSpawnPosition());
+    }
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(player.getCurrentMainCellCoordinates());
     }

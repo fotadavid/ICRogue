@@ -60,6 +60,10 @@ public abstract class Level {
         map[coords.x][coords.y].getConnectors().get(connector.getIndex()).setKeyId(keyId);
         map[coords.x][coords.y].getConnectors().get(connector.getIndex()).setCurrentState(Connector.ConnectorType.LOCKED);
     }
+    protected void openRoomConnector(DiscreteCoordinates coords, ConnectorInRoom connector)
+    {
+        map[coords.x][coords.y].getConnectors().get(connector.getIndex()).setCurrentState(Connector.ConnectorType.OPEN);
+    }
     public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(5, 15);}
 
     public ICRogueRoom[][] getMap() {

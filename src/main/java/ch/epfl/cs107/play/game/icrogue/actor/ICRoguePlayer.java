@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -27,6 +28,9 @@ import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean StaffCollection = false;
+    private boolean isTransitioning = false;
+    private String destination;
+    private DiscreteCoordinates arrivalCoordinates;
     private List<Integer> keyChain = new ArrayList<Integer>();
     private TextGraphics message;
     private Sprite sprite1, sprite11, sprite12, sprite13, sprite2, sprite21, sprite22, sprite23,  sprite3,  sprite31,  sprite32, sprite33, sprite4, sprite41, sprite42, sprite43;
@@ -60,13 +64,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         sprite3 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 64, 16, 32), new Vector(.15f,-.15f));
         sprite31 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 64, 16, 33), new Vector(.15f,-.15f));
         sprite32 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 64, 16, 32), new Vector(.15f,-.15f));
-        sprite33 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 64, 16, 33), new Vector(.15f,-.15f));
+        sprite33 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 64, 16, 32), new Vector(.15f,-.15f));
         movementArray3 = new Sprite[]{sprite3, sprite31, sprite32, sprite33};
         // gauche
         sprite4 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 96, 16, 32), new Vector(.15f,-.15f));
-        sprite41 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 96, 16, 33), new Vector(.15f,-.15f));
+        sprite41 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 96, 16, 32), new Vector(.15f,-.15f));
         sprite42 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 96, 16, 32), new Vector(.15f,-.15f));
-        sprite43 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 96, 16, 33), new Vector(.15f,-.15f));
+        sprite43 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 96, 16, 32), new Vector(.15f,-.15f));
         movementArray4 = new Sprite[]{sprite4, sprite41, sprite42, sprite43};
         currentsprite = sprite3;
     }
@@ -84,10 +88,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void update(float deltaTime) {
 
         Keyboard keyboard = getOwnerArea().getKeyboard();
-        Button down = keyboard.get(Keyboard.DOWN);
-        Button right = keyboard.get(Keyboard.RIGHT);
-        Button up = keyboard.get(Keyboard.UP);
-        Button left = keyboard.get(Keyboard.LEFT);
         moveIfPressed(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
         moveIfPressed(Orientation.UP, keyboard.get(Keyboard.UP));
         moveIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
@@ -98,10 +98,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
-       /* if( down.isDown() || right.isDown() || up.isDown() || left.isDown() )
-            arrayIndex = (arrayIndex + 1) % 4;*/
-        //if(down.isReleased() || right.isReleased() || up.isReleased() || left.isReleased())
-           // arrayIndex = 0;
         super.update(deltaTime);
 
     }
@@ -195,6 +191,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return Collections.singletonList (getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
     }
 
+    public String getDestination() {
+        return destination;
+    }
+    public boolean isTransitioning(){
+        return isTransitioning;
+    }
+    public void setTransitionStateToFalse(){ isTransitioning = false;}
+
     public boolean wantsCellInteraction() {
         return true;
     }
@@ -231,6 +235,20 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 key.collect();
                 keyChain.add(key.getKeyId());
             }
+        }
+        public void interactWith(Connector connector, boolean isCellInteraction)
+        {
+            if(isCellInteraction && !isDisplacementOccurs())
+            {
+                destination = connector.getDestination();
+                arrivalCoordinates = new DiscreteCoordinates(0, 2);
+                isTransitioning = true;
+            }
+            if(!keyChain.isEmpty())
+                if(!isCellInteraction && connector.getKeyId() == keyChain.get(0))
+                {
+                    connector.setCurrentState(Connector.ConnectorType.OPEN);
+                }
         }
     }
     @Override

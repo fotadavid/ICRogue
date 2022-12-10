@@ -80,7 +80,7 @@ public class Level0Room extends ICRogueRoom {
     }
 
     @Override
-    public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(5, 15);}
+    public DiscreteCoordinates getPlayerSpawnPosition() {return new DiscreteCoordinates(2, 5);}
 
     protected void createArea() {
         // Base

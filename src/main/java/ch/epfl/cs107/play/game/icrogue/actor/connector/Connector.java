@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
@@ -52,7 +53,7 @@ public class Connector extends AreaEntity implements Interactable {
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
         locked = new Sprite("icrogue/lockedDoor_"+orientation.ordinal(),
                 (orientation.ordinal()+1)%2+1, orientation.ordinal()%2+1, this);
-        currentState = invisible;
+        currentState = locked;
     }
     public DiscreteCoordinates getCoordinates(){return coordinates;}
 
@@ -60,6 +61,11 @@ public class Connector extends AreaEntity implements Interactable {
 
     public String getDestination() {
         return destination;
+    }
+    public int getKeyId(){
+        if(this.getType().equals(ConnectorType.LOCKED))
+            return keyId;
+        else return NO_KEY_ID;
     }
 
  public List<DiscreteCoordinates> getCurrentCells() {
@@ -77,17 +83,19 @@ public class Connector extends AreaEntity implements Interactable {
 
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isViewInteractable() {
+        if(this.getType() == ConnectorType.LOCKED)
+            return true;
         return false;
     }
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
-
+            ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 
     @Override

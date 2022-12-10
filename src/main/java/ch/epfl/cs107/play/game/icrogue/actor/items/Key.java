@@ -8,17 +8,21 @@ import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.Collections;
 import java.util.List;
 
-public class Key extends Item {
+public class Key extends Item{
     private int keyId;
     private Sprite key;
     public Key(Area area, Orientation orientation, DiscreteCoordinates position, int value)
     {
         super(area, orientation, position);
         this.keyId = value;
+        key = new Sprite("icrogue/key", 0.6f, 0.6f, this);
     }
-
+    public String getTitle(){
+        return "icrogue/key";
+    }
     @Override
     public void draw(Canvas canvas) {
         key.draw(canvas);
@@ -26,7 +30,12 @@ public class Key extends Item {
     public int getKeyId(){return keyId;}
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
-        return null;
+        return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
+
+    @Override
+    public boolean isCellInteractable() {
+        return true;
     }
 
     @Override

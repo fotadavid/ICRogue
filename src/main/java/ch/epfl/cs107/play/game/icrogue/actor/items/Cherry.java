@@ -23,7 +23,7 @@ public class Cherry extends Item{
     }
 
     public String getTitle() {
-        return "zelda/cherry";
+        return "icrogue/cherry";
     }
 
     @Override
