@@ -69,9 +69,10 @@ public class GraphicsEntity extends Entity{
     /// GraphicsEntity implements drawable
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
         if(graphics!= null) {
             graphics.draw(canvas);
         }
+        return false;
     }
 }

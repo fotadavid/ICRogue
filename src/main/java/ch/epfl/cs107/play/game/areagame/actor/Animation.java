@@ -120,8 +120,9 @@ public class Animation implements Updatable, Graphics{
 	/// Animation implements Graphics
 
 	@Override
-	public void draw(Canvas canvas) {
+	public boolean draw(Canvas canvas) {
 		frames[currentFrame].draw(canvas);
+		return false;
 	}
 
 

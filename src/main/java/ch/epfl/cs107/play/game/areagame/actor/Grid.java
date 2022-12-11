@@ -60,8 +60,9 @@ public class Grid extends Entity {
     /// Grid implements Graphics
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
         canvas.drawShape(gridLine, getTransform(), null, java.awt.Color.GRAY, 0.05f, 0.5f, 10000);
         canvas.drawShape(border, getTransform(), null, java.awt.Color.GRAY, 0.05f, 1, 10000);
+        return false;
     }
 }

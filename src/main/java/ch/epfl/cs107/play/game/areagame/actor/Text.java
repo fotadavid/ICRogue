@@ -172,12 +172,13 @@ public class Text extends Entity {
     /// Text implements graphics
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
 
         if(isScreenRelative) {
             setCurrentPosition(canvas.getPosition().sub(DX, DY).add(relativePosition));
         }
 
         textGraphics.draw(canvas);
+        return false;
     }
 }

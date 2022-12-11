@@ -27,7 +27,9 @@ public class Cherry extends Item{
     }
 
     @Override
-    public void draw(Canvas canvas) {cherry.draw(canvas);}
+    public boolean draw(Canvas canvas) {cherry.draw(canvas);
+        return false;
+    }
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {

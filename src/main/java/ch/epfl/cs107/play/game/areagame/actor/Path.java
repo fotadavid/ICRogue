@@ -48,8 +48,9 @@ public class Path extends Entity {
     /// Path implements Graphics
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
     	if(pathLine != null)
     		canvas.drawShape(pathLine, getTransform(), null, java.awt.Color.RED, 0.2f, 1f, 10000);
+        return false;
     }
 }

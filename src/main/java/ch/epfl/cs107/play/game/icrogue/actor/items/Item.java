@@ -13,11 +13,6 @@ public abstract class Item extends CollectableAreaEntity {
         super(area, orientation, position);
     }
 
-
-    public boolean isCollected(){
-        return true;
-    }
-
     public void update(){}
 
     @Override

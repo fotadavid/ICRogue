@@ -237,8 +237,9 @@ public class TextGraphics extends Node implements Attachable, Graphics {
     }
 
 	@Override
-	public void draw(Canvas canvas) {
+	public boolean draw(Canvas canvas) {
         canvas.drawText(text, fontSize, getTransform(), fillColor, outlineColor, thickness, fontName, bold, italics, anchor, hAlign, vAlign, alpha, depth);
-	}
+        return false;
+    }
 
 }

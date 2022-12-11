@@ -8,7 +8,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
@@ -101,8 +100,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         super.update(deltaTime);
 
     }
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
         currentsprite.draw(canvas);
+        return false;
     }
     public void fireBall() {
         Keyboard keyboard = getOwnerArea().getKeyboard();

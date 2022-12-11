@@ -7,7 +7,6 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ICRogueActor extends MovableAreaEntity {
@@ -23,7 +22,9 @@ public class ICRogueActor extends MovableAreaEntity {
     }
 
     @Override
-    public void draw(Canvas canvas) {}
+    public boolean draw(Canvas canvas) {
+        return false;
+    }
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {

@@ -26,7 +26,11 @@ public class Staff extends Item{
     }
 
     @Override
-    public void draw(Canvas canvas) {staff.draw(canvas); }
+    public boolean draw(Canvas canvas) {
+        if(!this.isCollected())
+            staff.draw(canvas);
+        return false;
+    }
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -35,7 +39,9 @@ public class Staff extends Item{
 
     @Override
     public boolean takeCellSpace() {
-        return true;
+        if(!this.isCollected())
+            return true;
+        return false;
     }
 
 

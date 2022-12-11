@@ -24,8 +24,10 @@ public class Key extends Item{
         return "icrogue/key";
     }
     @Override
-    public void draw(Canvas canvas) {
-        key.draw(canvas);
+    public boolean draw(Canvas canvas) {
+        if(!this.isCollected())
+            key.draw(canvas);
+        return true;
     }
     public int getKeyId(){return keyId;}
     @Override
@@ -48,4 +50,5 @@ public class Key extends Item{
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
+
 }

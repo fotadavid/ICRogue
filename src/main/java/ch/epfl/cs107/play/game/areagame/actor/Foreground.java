@@ -68,8 +68,9 @@ public class Foreground extends Entity {
     /// Foreground implements Graphics
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
         sprite.draw(canvas);
+        return false;
     }
 
 }

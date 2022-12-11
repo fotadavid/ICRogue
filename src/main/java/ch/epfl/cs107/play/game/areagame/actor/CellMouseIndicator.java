@@ -53,7 +53,8 @@ public class CellMouseIndicator extends AreaEntity {
 	}
 
 	@Override
-	public void draw(Canvas canvas) {
+	public boolean draw(Canvas canvas) {
 		overSprite.draw(canvas);
-	}
+        return false;
+    }
 }

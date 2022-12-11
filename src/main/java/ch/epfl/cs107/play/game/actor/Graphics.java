@@ -10,7 +10,9 @@ public interface Graphics {
 
     /**
      * Renders itself on specified canvas.
+     *
      * @param canvas target, not null
+     * @return
      */
-    void draw(Canvas canvas);
+    boolean draw(Canvas canvas);
 }

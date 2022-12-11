@@ -126,8 +126,9 @@ public class ShapeGraphics extends Node implements Graphics {
     }
     
     @Override
-	public void draw(Canvas canvas) {
+	public boolean draw(Canvas canvas) {
 		canvas.drawShape(shape, getTransform(), fillColor, outlineColor, thickness, alpha, depth);
-	}
+        return false;
+    }
     
 }

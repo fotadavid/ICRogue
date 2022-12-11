@@ -41,9 +41,10 @@ public class SimpleGhost extends Entity {
 		 setCurrentPosition(getPosition().add(delta, 0.f));
 	 }
 	 @Override
-	 public void draw(Canvas canvas) {
+	 public boolean draw(Canvas canvas) {
 		 sprite.draw(canvas);	
 		 message.draw(canvas);
+		 return false;
 	 }
 	 @Override
 	 public void update(float deltaTime) {

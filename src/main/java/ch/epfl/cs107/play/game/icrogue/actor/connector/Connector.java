@@ -6,14 +6,11 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
-import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public class Connector extends AreaEntity implements Interactable {
@@ -99,13 +96,14 @@ public class Connector extends AreaEntity implements Interactable {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public boolean draw(Canvas canvas) {
         if( type.equals(ConnectorType.INVISIBLE) )
             invisible.draw(canvas);
         else if( type.equals(ConnectorType.LOCKED) )
             locked.draw(canvas);
         else if( type.equals(ConnectorType.CLOSED) )
             closed.draw(canvas);
+        return false;
     }
 
     public void setCurrentState(ConnectorType type){

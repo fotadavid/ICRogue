@@ -96,10 +96,11 @@ public class GhostPlayer extends MovableAreaEntity {
 	    }
     
 	@Override
-	public void draw(Canvas canvas) {
+	public boolean draw(Canvas canvas) {
 		sprite.draw(canvas);	
 		message.draw(canvas);
-	}
+        return false;
+    }
 
 	public boolean isWeak() {
 		return (hp <= 0.f);
