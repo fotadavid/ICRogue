@@ -1,8 +1,6 @@
 package ch.epfl.cs107.play.game.icrogue.area;
 
-import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0KeyRoom;
-import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
-import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0StaffRoom;
+import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Level0 extends Level{
@@ -34,7 +32,7 @@ public class Level0 extends Level{
         setRoomConnector(room00, "icrogue/level010", Level0Room.Level0Connectors.E);
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1,0);
-        setRoom(room10, new Level0Room(room10));
+        setRoom(room10, new Level0TurretRoom(room10));
         setRoomConnector(room10, "icrogue/level011", Level0Room.Level0Connectors.S);
         setRoomConnector(room10, "icrogue/level020", Level0Room.Level0Connectors.E);
 

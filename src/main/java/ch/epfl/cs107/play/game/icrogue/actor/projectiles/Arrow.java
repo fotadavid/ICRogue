@@ -22,9 +22,6 @@ public class Arrow extends Projectile{
     private int damagePoints;
     private Sprite arrow;
 
-    private Sprite arrowsprite1, arrowsprite2, arrowsprite3, arrowsprite4;
-
-
     private final static int MOVE_DURATION = 8;
 
 
@@ -33,11 +30,6 @@ public class Arrow extends Projectile{
         arrow = new Sprite("zelda/arrow", 1f, 1f, this, new RegionOfInterest(32*orientation.ordinal(), 0, 32, 32), new Vector(0, 0));
         damagePoints = 1;
     }
-
-    private void throwArrow(Orientation orientation) {
-
-    }
-
     public String getTitle() {
         return "zelda/arrow";
     }
@@ -60,7 +52,9 @@ public class Arrow extends Projectile{
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
-
+    public boolean isCellInteractable() {
+        return true;
+    }
     public boolean takeCellSpace() {
         return false;
     }

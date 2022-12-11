@@ -11,13 +11,13 @@ public class Level0EnemyRoom extends Level0Room{
         super(roomCoordinates);
     }
     List<ICRogueActor> enemies = new ArrayList<>();
-
+    public void addEnemyToList( ICRogueActor enemy ) {enemies.add(enemy);}
     @Override
     protected void createArea() {
+        super.createArea();
         for( ICRogueActor a : enemies)
             if(a.isAlive())
                 registerActor(a);
-        else if(a.isDead())
-            registerActor(a);
+        else unregisterActor(a);
     }
 }

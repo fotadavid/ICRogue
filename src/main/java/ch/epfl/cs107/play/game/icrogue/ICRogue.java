@@ -54,6 +54,10 @@ public class ICRogue extends AreaGame {
     super.update(deltaTime);
     if(player.isTransitioning())
         switchRoom();
+    if(!player.isAlive()){
+        player.leaveArea();
+        initLevel();
+    }
     resetMotion();
     }
 

@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
@@ -36,6 +37,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite currentsprite;
 
     private Fire fire;
+    private boolean isAlive = true;
 
     /// Animation duration in frame number
     final static int MOVE_DURATION = 7;
@@ -250,7 +252,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                     connector.setCurrentState(Connector.ConnectorType.OPEN);
                 }
         }
+
+        @Override
+        public void interactWith(Arrow arrow, boolean isCellInteraction) {
+            if(isCellInteraction)
+                isAlive = false;
+        }
     }
+    public boolean isAlive(){return isAlive;}
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
     }

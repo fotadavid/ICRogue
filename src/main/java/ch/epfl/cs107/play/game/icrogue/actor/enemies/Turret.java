@@ -9,10 +9,13 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Turret extends ICRogueActor {
     private Sprite turret;
     private final float COOLDOWN = 2.f;
-    private Arrow arrow;
+    private Arrow arrow1, arrow2, arrow3, arrow4;
     private boolean launch;
     private float dt;
     public Turret(Area area, Orientation orientation, DiscreteCoordinates position) {
@@ -21,27 +24,29 @@ public class Turret extends ICRogueActor {
                 new Vector(-0.25f, 0));
 
     }
-
+    public List<DiscreteCoordinates> getCurrentCells() {
+        return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        dt++;
+        dt+=deltaTime;
         if(dt >= COOLDOWN)
         {
             dt = 0;
-            launch = !launch;
+            throwArrow();
         }
-        throwArrow();
     }
 
     private void throwArrow() {
-        if(launch)
-        {
-            arrow = new Arrow(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
-            arrow = new Arrow(getOwnerArea(), Orientation.UP, getCurrentMainCellCoordinates());
-            arrow = new Arrow(getOwnerArea(), Orientation.LEFT, getCurrentMainCellCoordinates());
-            arrow = new Arrow(getOwnerArea(), Orientation.RIGHT, getCurrentMainCellCoordinates());
-        }
+            arrow1 = new Arrow(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(arrow1);
+            arrow2 = new Arrow(getOwnerArea(), Orientation.UP, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(arrow2);
+            arrow3 = new Arrow(getOwnerArea(), Orientation.LEFT, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(arrow3);
+            arrow4 = new Arrow(getOwnerArea(), Orientation.RIGHT, getCurrentMainCellCoordinates());
+            getOwnerArea().registerActor(arrow4);
     }
 
     public boolean draw(Canvas canvas) {
