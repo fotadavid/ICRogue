@@ -23,10 +23,6 @@ public abstract class ICRogueRoom extends Area {
     private List<DiscreteCoordinates> connectorsCoordinates;
     private List<Orientation> orientations;
     private List <String> connectorDestinationRooms;
-
-    // constructor that initializes the instance variables
-    // and creates a list of Connector based
-    // on the connectorsCoordinates, orientations, and connectorDestinationRooms parameters
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates, List<Orientation> orientations,
                        List <String> connectorDestinationRooms, String behaviorName, DiscreteCoordinates roomCoordinates)
     {
@@ -39,8 +35,6 @@ public abstract class ICRogueRoom extends Area {
             connectors.add(new Connector(this, orientations.get(i), connectorsCoordinates.get(i), connectorDestinationRooms.get(i)));
         }
     }
-
-    // returns the list of connectors in the room
     public List<Connector> getConnectors(){
         return connectors;
     }
@@ -70,11 +64,8 @@ public abstract class ICRogueRoom extends Area {
         return 11;
     }
 
-    // returns a DiscreteCoordinates object representing the spawn position for the player
     public abstract DiscreteCoordinates getPlayerSpawnPosition();
 
-    // method that updates the state of the connectors based on user input
-    // and calls a logic method to determine whether to open the connectors
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -89,6 +80,7 @@ public abstract class ICRogueRoom extends Area {
              for(Connector connector : connectors)
                  if( connector.getCoordinates().equals(new DiscreteCoordinates(0, 4)))
                      connector.setCurrentState(Connector.ConnectorType.LOCKED);
+
              if(logic() == true)
                  for(Connector connector : connectors) {
                      if (connector.getType() == Connector.ConnectorType.CLOSED)
@@ -97,8 +89,6 @@ public abstract class ICRogueRoom extends Area {
 
     }
 
-    // check if the player has entered cells in the area
-    // returns true if this condition is met
     public boolean logic(){
         getPlayerSpawnPosition();
         if(enterAreaCells()){
@@ -106,7 +96,6 @@ public abstract class ICRogueRoom extends Area {
         return false;
     }
 
-    // sets the behavior for the area and calls the createArea method to add actors to the area
     @Override
     public boolean begin(Window window, FileSystem behaviorName) {
         if (super.begin(window, behaviorName)) {

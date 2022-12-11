@@ -4,7 +4,6 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -47,10 +46,9 @@ public class ICRogueActor extends MovableAreaEntity {
         return false;
     }
     public boolean isAlive(){return true;}
-    public boolean isDead(){return true;}
-
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {}
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
 
+    }
 
 }

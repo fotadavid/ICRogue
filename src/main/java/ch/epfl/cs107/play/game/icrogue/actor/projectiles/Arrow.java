@@ -60,8 +60,6 @@ public class Arrow extends Projectile{
     public boolean isCellInteractable() {
         return true;
     }
-
-
     public boolean takeCellSpace() {
         return false;
     }

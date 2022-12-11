@@ -19,50 +19,42 @@ public abstract class Projectile extends ICRogueActor implements Interactor {
      */
 
 
-    private int DEFAULT_MOVE_DURATION = 10; // default move duration
-    private int DEFAULT_IMAGE = 1; // default image
-    private boolean isConsumed; // check whether the projectile has been consumed or not
-
+    private int DEFAULT_MOVE_DURATION = 10;
+    private int DEFAULT_IMAGE = 1;
+    private int moveDuration;
+    private boolean isConsumed;
     public Projectile(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
     }
 
-    // update the state of the projectile
     public void update() {}
 
-    // mark the projectile as consumed
     public void consume() {
         isConsumed = true;
     }
 
-    // check if the projectile has been consumed
     public boolean isConsumed() {
         return isConsumed;
     }
 
-    // indicate that the projectile does not occupy a cell
     @Override
     public boolean takeCellSpace() {
         return false;
     }
 
-    // get the cells occupied by the projectile
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
-    // get the cells that the projectile can interact with
     public List<DiscreteCoordinates>getFieldOfViewCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
     }
 
-    // indicate that the projectile wants cell interactions
     public boolean wantsCellInteraction() {
         return true;
     }
 
-    // indicate that the projectile wants view interactions
     public boolean wantsViewInteraction() {
         return true;
     }

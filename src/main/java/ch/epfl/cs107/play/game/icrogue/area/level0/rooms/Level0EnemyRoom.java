@@ -13,9 +13,6 @@ public class Level0EnemyRoom extends Level0Room{
     List<ICRogueActor> enemies = new ArrayList<>();
     public void addEnemyToList( ICRogueActor enemy ) {enemies.add(enemy);}
     @Override
-
-    // created and sets up the room and its contents as well as the enemies
-    // enemies that are removed from the game can't interact with the player and other objects
     protected void createArea() {
         super.createArea();
         for( ICRogueActor a : enemies)
