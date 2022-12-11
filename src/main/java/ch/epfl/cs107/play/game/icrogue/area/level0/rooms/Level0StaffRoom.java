@@ -19,4 +19,10 @@ public class Level0StaffRoom extends Level0ItemRoom{
         super.createArea();
         registerActor(staff);
     }
+
+    public boolean logic(){
+        if(staff.isCollected()){
+            return true;}
+        return false;
+    }
 }

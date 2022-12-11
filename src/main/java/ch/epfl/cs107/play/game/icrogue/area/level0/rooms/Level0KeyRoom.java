@@ -30,4 +30,9 @@ public class Level0KeyRoom extends Level0ItemRoom {
         }
     }
 
+    public boolean logic(){
+        if(key.isCollected()){
+            return true;}
+        return false;
+    }
 }

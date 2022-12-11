@@ -26,4 +26,5 @@ abstract class Level0ItemRoom extends Level0Room{
         return isCollected;
     }
 
+
 }

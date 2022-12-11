@@ -80,6 +80,20 @@ public abstract class ICRogueRoom extends Area {
              for(Connector connector : connectors)
                  if( connector.getCoordinates().equals(new DiscreteCoordinates(0, 4)))
                      connector.setCurrentState(Connector.ConnectorType.LOCKED);
+
+             if(logic() == true)
+                 for(Connector connector : connectors) {
+                     if (connector.getType() == Connector.ConnectorType.CLOSED)
+                         connector.setCurrentState(Connector.ConnectorType.OPEN);
+                 }
+
+    }
+
+    public boolean logic(){
+        getPlayerSpawnPosition();
+        if(enterAreaCells()){
+            return true;}
+        return false;
     }
 
     @Override
@@ -93,5 +107,4 @@ public abstract class ICRogueRoom extends Area {
         }
         return false;
     }
-
 }
