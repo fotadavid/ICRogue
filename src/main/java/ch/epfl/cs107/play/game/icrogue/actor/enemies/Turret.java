@@ -3,8 +3,10 @@ package ch.epfl.cs107.play.game.icrogue.actor.enemies;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public class Turret extends ICRogueActor {
     private Sprite turret;
+    private boolean isAlive = true;
     private final float COOLDOWN = 2.f;
     private Arrow arrow1, arrow2, arrow3, arrow4;
     private boolean launch;
@@ -23,6 +26,9 @@ public class Turret extends ICRogueActor {
         turret = new Sprite("icrogue/static_npc", 1.5f, 1.5f, this, null,
                 new Vector(-0.25f, 0));
 
+    }
+    public boolean isCellInteractable() {
+        return true;
     }
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -36,6 +42,8 @@ public class Turret extends ICRogueActor {
             dt = 0;
             throwArrow();
         }
+        if(!this.isAlive)
+            getOwnerArea().unregisterActor(this);
     }
 
     private void throwArrow() {
@@ -50,16 +58,24 @@ public class Turret extends ICRogueActor {
     }
 
     public boolean draw(Canvas canvas) {
-        turret.draw(canvas);
+        if(this.isAlive)
+            turret.draw(canvas);
         return false;
     }
 
-    public boolean dead() {
-            return true;
+    @Override
+    public boolean takeCellSpace() {return false;}
+
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 
-    public void kill() {
+    public boolean IsAlive() {
+            return isAlive;
+    }
 
+    public void die() {
+        isAlive = false;
     }
 
 }

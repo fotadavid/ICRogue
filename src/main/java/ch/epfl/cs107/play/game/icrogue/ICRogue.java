@@ -84,7 +84,13 @@ public class ICRogue extends AreaGame {
         player.leaveArea();
         player.setTransitionStateToFalse();
         Level0Room area = (Level0Room) setCurrentArea(player.getDestination(), true);
-        player.enterArea(area, area.getPlayerSpawnPosition());
+        if(player.getOrientation() == Orientation.DOWN)
+            player.enterArea(area, new DiscreteCoordinates(5, 8));
+        else if(player.getOrientation() == Orientation.UP)
+            player.enterArea(area, new DiscreteCoordinates(5, 1));
+        else if(player.getOrientation() == Orientation.RIGHT)
+            player.enterArea(area, new DiscreteCoordinates(1, 5));
+        else player.enterArea(area, new DiscreteCoordinates(8, 5));
     }
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(player.getCurrentMainCellCoordinates());

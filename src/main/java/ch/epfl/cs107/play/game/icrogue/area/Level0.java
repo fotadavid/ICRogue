@@ -32,7 +32,7 @@ public class Level0 extends Level{
         setRoomConnector(room00, "icrogue/level010", Level0Room.Level0Connectors.E);
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1,0);
-        setRoom(room10, new Level0TurretRoom(room10));
+        setRoom(room10, new Level0Room(room10));
         setRoomConnector(room10, "icrogue/level011", Level0Room.Level0Connectors.S);
         setRoomConnector(room10, "icrogue/level020", Level0Room.Level0Connectors.E);
 
@@ -49,7 +49,7 @@ public class Level0 extends Level{
         setRoomConnector(room30, "icrogue/level020", Level0Room.Level0Connectors.W);
 
         DiscreteCoordinates room11 = new DiscreteCoordinates(1, 1);
-        setRoom (room11, new Level0Room(room11));
+        setRoom (room11, new Level0TurretRoom(room11));
         setRoomConnector(room11, "icrogue/level010", Level0Room.Level0Connectors.N);
     }
 }

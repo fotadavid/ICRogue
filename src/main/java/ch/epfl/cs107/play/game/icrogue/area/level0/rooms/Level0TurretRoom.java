@@ -20,4 +20,13 @@ public class Level0TurretRoom extends Level0EnemyRoom{
         registerActor(turret1);
         registerActor(turret2);
     }
+    public boolean logic(){
+        if(!turret1.IsAlive() && !turret2.IsAlive()){
+            return true;}
+        return false;
+    }
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+    }
 }

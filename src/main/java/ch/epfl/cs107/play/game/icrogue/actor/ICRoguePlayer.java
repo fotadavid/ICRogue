@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
@@ -257,6 +258,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(Arrow arrow, boolean isCellInteraction) {
             if(isCellInteraction)
                 isAlive = false;
+        }
+
+        @Override
+        public void interactWith(Turret turret, boolean isCellInteraction) {
+            if(isCellInteraction)
+                turret.die();
         }
     }
     public boolean isAlive(){return isAlive;}

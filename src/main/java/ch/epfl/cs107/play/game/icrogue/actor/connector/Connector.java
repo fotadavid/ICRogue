@@ -97,12 +97,12 @@ public class Connector extends AreaEntity implements Interactable {
 
     @Override
     public boolean draw(Canvas canvas) {
-        if( type.equals(ConnectorType.INVISIBLE) )
-            invisible.draw(canvas);
-        else if( type.equals(ConnectorType.LOCKED) )
-            locked.draw(canvas);
-        else if( type.equals(ConnectorType.CLOSED) )
-            closed.draw(canvas);
+            if (type.equals(ConnectorType.INVISIBLE))
+                invisible.draw(canvas);
+            else if (type.equals(ConnectorType.LOCKED))
+                locked.draw(canvas);
+            else if (type.equals(ConnectorType.CLOSED) && !getOwnerArea().logic())
+                closed.draw(canvas);
         return false;
     }
 

@@ -262,6 +262,9 @@ public abstract class Area implements Playable, PauseMenu.Pausable {
     public boolean resume(Window window, FileSystem fileSystem){
         return true;
     }
+    public boolean logic(){
+        return false;
+    }
 
     @Override
     public void update(float deltaTime) {    	
