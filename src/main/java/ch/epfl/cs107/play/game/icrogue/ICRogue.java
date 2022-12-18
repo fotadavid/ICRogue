@@ -23,6 +23,7 @@ public class ICRogue extends AreaGame {
     public final static float CAMERA_SCALE_FACTOR = 13.f;
     public final static String ROOM = "icrogue/Level0Room";
     private ICRoguePlayer player; // creer iCROGUe player
+    private boolean YOU_LOST_ONCE = true;
     private final String[] areas = {ROOM};
 
     private int areaIndex;
@@ -52,6 +53,11 @@ public class ICRogue extends AreaGame {
 @Override
     public void update(float deltaTime) {
     super.update(deltaTime);
+    currentLevel.checkGameStatus();
+    if(!player.isAlive() && YOU_LOST_ONCE) {
+        System.out.println("You Lost!" + "\n" + "Try Again");
+        YOU_LOST_ONCE = false;
+    }
     if(player.isTransitioning())
         switchRoom();
     if(!player.isAlive()){

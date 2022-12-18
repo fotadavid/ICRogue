@@ -6,8 +6,9 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 public class Level0 extends Level{
     private DiscreteCoordinates playerRoomTransitionPosition = new DiscreteCoordinates(0, 2);
     public Level0(){super(new DiscreteCoordinates(1, 0), 4, 2);}
-    private int PART_1_KEY_ID = 2;
-    private int BOSS_KEY_ID = 3;
+    private final int PART_1_KEY_ID = 2;
+    private final int BOSS_KEY_ID = 3;
+    private final DiscreteCoordinates BOSS_ROOM = new DiscreteCoordinates(0, 0);
     public String getTitle(){
         return "icrogue/level010";
     }
@@ -15,7 +16,7 @@ public class Level0 extends Level{
         //generateMap1();
         generateMap2();
     }
-
+    public void generateRandomMap(){}
     private void generateMap1() {
         DiscreteCoordinates room00 = new DiscreteCoordinates(0, 0);
         setRoom(room00, new Level0KeyRoom(room00, PART_1_KEY_ID));
@@ -28,14 +29,13 @@ public class Level0 extends Level{
 
     private void generateMap2() {
         DiscreteCoordinates room00 = new DiscreteCoordinates(0, 0);
-        setRoom(room00, new Level0Room(room00));
+        setRoom (room00, new Level0TurretRoom(room00));
         setRoomConnector(room00, "icrogue/level010", Level0Room.Level0Connectors.E);
 
         DiscreteCoordinates room10 = new DiscreteCoordinates(1,0);
         setRoom(room10, new Level0Room(room10));
         setRoomConnector(room10, "icrogue/level011", Level0Room.Level0Connectors.S);
         setRoomConnector(room10, "icrogue/level020", Level0Room.Level0Connectors.E);
-
         lockRoomConnector(room10, Level0Room.Level0Connectors.W,  BOSS_KEY_ID);
         setRoomConnectorDestination(room10, "icrogue/level000", Level0Room.Level0Connectors.W);
 
@@ -49,7 +49,7 @@ public class Level0 extends Level{
         setRoomConnector(room30, "icrogue/level020", Level0Room.Level0Connectors.W);
 
         DiscreteCoordinates room11 = new DiscreteCoordinates(1, 1);
-        setRoom (room11, new Level0TurretRoom(room11));
+        setRoom(room11, new Level0Room(room11));
         setRoomConnector(room11, "icrogue/level010", Level0Room.Level0Connectors.N);
     }
 }

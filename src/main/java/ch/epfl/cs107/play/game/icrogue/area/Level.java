@@ -15,6 +15,7 @@ import java.util.Map;
 public abstract class Level {
 
     private ICRogueRoom[][] map;
+    private boolean GAME_OVER_ONCE = true; //Variable qui permet d'afficher Game Over! une seule fois
     private DiscreteCoordinates arrivalCoordinates;
     private DiscreteCoordinates bossRoom;
     private DiscreteCoordinates departure;
@@ -27,18 +28,21 @@ public abstract class Level {
         this.bossRoom = new DiscreteCoordinates(0, 0);
         this.departure = departure;
     }
-
     public DiscreteCoordinates getDeparture() {
         return departure;
     }
-    public void addAreas(ICRogue game)
-    {
-        for( int i = 0; i < map.length; i++ )
-            for( int j = 0; j < map[0].length; j++ )
-                if(map[i][j] != null)
+    public void addAreas(ICRogue game) {
+        for (int i = 0; i < map.length; i++)
+            for (int j = 0; j < map[0].length; j++)
+                if (map[i][j] != null)
                     game.addArea(map[i][j]);
     }
-
+    public void checkGameStatus(){
+        if (getMap()[0][0].logic() && GAME_OVER_ONCE){
+            GAME_OVER_ONCE = false;
+            System.out.println("You Won!");
+        }
+    }
     public void setDepartureRoom(DiscreteCoordinates departure) {
         departureRoom = map[departure.x][departure.y].getTitle();
     }
