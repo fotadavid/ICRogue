@@ -11,7 +11,6 @@ import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
 
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Specific area
  */
