@@ -9,14 +9,14 @@ public class Level0TurretRoom extends Level0EnemyRoom{
     private Turret turret1;
     private Turret turret2;
 
-    // constructor creates a new Turrets actors and adds them to the room
+    // constructor creates 2 new Turret actors and adds them to the room
     public Level0TurretRoom(DiscreteCoordinates roomCoordinates) {
         super(roomCoordinates);
         turret1 = new Turret(this, Orientation.UP, new DiscreteCoordinates(1, 8));
         turret2 = new Turret(this, Orientation.UP, new DiscreteCoordinates(8, 1));
     }
 
-    // called to create the area of the room and register both Turret as actors
+    // called to create the area of the room and register both Turrets as actors
     @Override
     protected void createArea() {
         super.createArea();
