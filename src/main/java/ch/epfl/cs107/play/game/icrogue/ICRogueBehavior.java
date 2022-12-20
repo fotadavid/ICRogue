@@ -22,6 +22,7 @@ public class ICRogueBehavior extends AreaBehavior {
         final int type;
         final boolean isWalkable;
 
+       //objet est traversable
         ICRogueCellType(int type, boolean isWalkable){
             this.type = type;
             this.isWalkable = isWalkable;

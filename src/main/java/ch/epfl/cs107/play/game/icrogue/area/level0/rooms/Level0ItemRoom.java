@@ -15,10 +15,15 @@ abstract class Level0ItemRoom extends Level0Room{
 
     List<Item> items = new ArrayList<>();
 
+    // takes in a single argument of type DiscreteCoordinates (represents the coordinates of the room)
     public Level0ItemRoom(DiscreteCoordinates roomCoordinates) {
         super(roomCoordinates);
     }
+
+    // adds an Item object to the list of items for this room
     public void addItemToList(Item item){items.add(item);}
+
+    // returns a boolean value indicating whether the object isCollected or not
     public boolean isCollected() {
         return isCollected;
     }

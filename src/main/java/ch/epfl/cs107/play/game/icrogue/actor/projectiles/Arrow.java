@@ -35,10 +35,12 @@ public class Arrow extends Projectile{
     {
         return damagePoints;
     }
+    // returns the string of the Arrow
     public String getTitle() {
         return "zelda/arrow";
     }
 
+    // updates the Arrow object's position and check if it has been consumed
     @Override
     public void update(float deltaTime) {
         move(5);
@@ -47,29 +49,43 @@ public class Arrow extends Projectile{
             getOwnerArea().unregisterActor(this);
     }
 
+    // draws the arrow on the game screen
     @Override
     public boolean draw(Canvas canvas) {
         arrow.draw(canvas);
         return false;
     }
 
+    // returns a singleton list containing only the coordinates of the cell that the arrow is located in
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
+
+    // returns a boolean value indicating whether the Staff can be interacted with by other entities
     public boolean isCellInteractable() {
         return true;
     }
+
+    // returns a boolean value indicating whether the Arrow object occupies space in the cells it is in
     public boolean takeCellSpace() {
         return false;
     }
+
+    // allows the Arrow object to interact with another Interactable
     public void interactWith(Interactable other, boolean isCellInteraction )
     {
         other.acceptInteraction(handler, isCellInteraction);
     }
+
+    // allows the Arrow to receive interactions from other objects
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
+
+    // inner class that implements the ICRogueInteractionHandler interface
+    // interactWith method that determines how the Arrow object should react
+    // when it interacts with a cell in the game
     Arrow.ICRogueArrowInteractionHandler handler = new Arrow.ICRogueArrowInteractionHandler();
     private  class ICRogueArrowInteractionHandler implements ICRogueInteractionHandler
     {

@@ -37,10 +37,15 @@ public class Fire extends Projectile {
         framePoints = 5;
     }
 
+    // returns the string of the Fire
     public String getTitle() {
         return "zelda/fire";
     }
 
+    // moves the projectile forward by calling the move method with a fixed distance
+    // and calls the update method of the superclass
+    // checks if the projectile has been consumed (has reached its target or hit an obstacle)
+    // if so removes it from the area
     @Override
     public void update(float deltaTime) {
         move(5);
@@ -49,27 +54,39 @@ public class Fire extends Projectile {
             getOwnerArea().unregisterActor(this);
     }
 
+    // draws the Fire object on the screen using its Sprite
     @Override
     public boolean draw(Canvas canvas) {
         fire.draw(canvas);
         return false;
     }
 
+    // returns a list containing the coordinates of the cell the Fire
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
+    // returns false, indicating that the Fire does not occupy a cell on the game grid
     public boolean takeCellSpace() {
         return false;
     }
+
+    // allows the Fire to interact with other objects in the game
     public void interactWith(Interactable other, boolean isCellInteraction )
     {
         other.acceptInteraction(handler, isCellInteraction);
     }
+
+    // allows the Fire object to be interacted with by other objects in the game
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
+
+    // inner class that implements the ICRogueInteractionHandler interface
+    // method defines how the Fire object should interact with other objects in the game
+    // if the cell is a wall or a hole, the Fire object is consumed (removed from the game)
+    // if the other object is a Turret, it is killed
     ICRogueFireInteractionHandler handler = new ICRogueFireInteractionHandler();
     private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler
     {

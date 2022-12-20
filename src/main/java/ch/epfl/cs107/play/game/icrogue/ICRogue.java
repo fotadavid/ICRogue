@@ -37,6 +37,7 @@ public class ICRogue extends AreaGame {
     ICRogueRoom currentRoom;
     Level currentLevel;
 
+    //méthode chargée de mettre en place le niveau
     private void initLevel(){
         PLAYER_LEAVES_ONCE = true;
         currentLevel = new Level0();
@@ -77,6 +78,7 @@ public class ICRogue extends AreaGame {
     resetMotion();
     }
 
+    //faire une réinitialisation du jeu
     public void resetMotion(){
         Keyboard keyboard = getWindow().getKeyboard();
         Button b = keyboard.get(Keyboard.R);
