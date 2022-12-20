@@ -2,10 +2,7 @@ package ch.epfl.cs107.play.game.icrogue.actor;
 
 import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Interactable;
-import ch.epfl.cs107.play.game.areagame.actor.Interactor;
-import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
@@ -29,6 +26,7 @@ import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean StaffCollection = false;
+    private boolean UNREGISTER_ONCE = true;
     private boolean isTransitioning = false;
     private String destination;
     private DiscreteCoordinates arrivalCoordinates;
@@ -100,6 +98,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
+        if(!isAlive && UNREGISTER_ONCE) {
+            UNREGISTER_ONCE = false;
+            gameOver();
+            getOwnerArea().unregisterActor(this);
+        }
         super.update(deltaTime);
 
     }
@@ -267,6 +270,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
     public boolean isAlive(){return isAlive;}
+    public void gameOver(){
+        Foreground gameOver = new Foreground(getOwnerArea(), new RegionOfInterest(5, 5, 1200, 2000), "icrogue/GameOverRestart");
+        getOwnerArea().registerActor(gameOver);
+    }
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
     }

@@ -32,8 +32,7 @@ public abstract class Level {
     private DiscreteCoordinates arrivalCoordinates;
     protected int bossKey;
     private DiscreteCoordinates bossRoom;
-    private DiscreteCoordinates departure;
-    private String departureRoom;
+    protected String departureRoom;
     private List<Connector> connectors;
     private static DiscreteCoordinates playerSpawnPosition = new DiscreteCoordinates(5, 15);
     private DiscreteCoordinates startPosition;
@@ -46,10 +45,7 @@ public abstract class Level {
         this.roomsDistribution = roomsDistribution;
         map = new ICRogueRoom[width][height];
         this.bossRoom = new DiscreteCoordinates(0, 0);
-        this.departure = departure;
-    }
-    public DiscreteCoordinates getDeparture() {
-        return departure;
+        this.startPosition = startPosition;
     }
     public void addAreas(ICRogue game) {
         for (int i = 0; i < map.length; i++)
@@ -108,7 +104,7 @@ public abstract class Level {
         List<DiscreteCoordinates> availableLocations = new ArrayList<>();
         int needToPlace;
         int roomsToPlace = 0;
-        int freeSlots = 0;
+        int freeSlots;
         for (int i = 0; i < roomsDistribution.length; i++)
             roomsToPlace += roomsDistribution[i];
         MapState[][] RoomPlacement = new MapState[map.length][map[0].length];
@@ -119,8 +115,12 @@ public abstract class Level {
         roomsToPlace--;
         availableLocations.add( new DiscreteCoordinates(map.length / 2, map[0].length / 2));
         while (roomsToPlace > 0) {
-            for (int i = 0; i < map.length; i++)
+            for (int i = 0; i < map.length; i++) {
+                if(roomsToPlace == 0)
+                    break;
                 for (int j = 0; j < map[0].length; j++) {
+                    if (roomsToPlace == 0)
+                        break;
                     availablePlaces.clear();
                     freeSlots = 0;
                     if (RoomPlacement[i][j].equals(MapState.PLACED)) {
@@ -144,6 +144,10 @@ public abstract class Level {
                                 freeSlots++;
                                 availablePlaces.add(3);
                             }
+                        if(roomsToPlace == 0)
+                            break;
+                        if(freeSlots == 0)
+                            break;
                         if (freeSlots < roomsToPlace)
                             needToPlace = RandomHelper.roomGenerator.nextInt(1, freeSlots + 1);
                         else needToPlace = RandomHelper.roomGenerator.nextInt(1, roomsToPlace + 1);
@@ -178,7 +182,9 @@ public abstract class Level {
                         RoomPlacement[i][j] = MapState.EXPLORED;
                     }
                 }
+            }
         }
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 if (RoomPlacement[i][j] == MapState.NULL) {
@@ -215,8 +221,6 @@ public abstract class Level {
         }
         setRoom(bossRoom, new Level0TurretRoom(bossRoom));
         for( int i = 0; i < roomsDistribution.length; i++ ){
-            if(availableLocations.size() < roomsDistribution[i] )
-                continue;
             Collections.shuffle(availableLocations);
             for( int j = 0; j < roomsDistribution[i]; j++ ){
                 DiscreteCoordinates location = availableLocations.get(j);
@@ -251,6 +255,7 @@ public abstract class Level {
                 }
             }
         }
+        departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
         setUpConnector(RoomPlacement);
         return RoomPlacement;
     }

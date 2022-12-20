@@ -1,5 +1,6 @@
 package ch.epfl.cs107.play.game.icrogue;
 
+import ch.epfl.cs107.play.game.Playable;
 import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
@@ -24,7 +25,10 @@ public class ICRogue extends AreaGame {
     public final static String ROOM = "icrogue/Level0Room";
     private ICRoguePlayer player; // creer iCROGUe player
     private boolean YOU_LOST_ONCE = true;
+    private boolean PLAYER_LEAVES_ONCE = true;
     private final String[] areas = {ROOM};
+    private float dt = 0;
+    private final float GAME_OVER_TIME = 4.f;
 
     private int areaIndex;
     /**
@@ -34,6 +38,7 @@ public class ICRogue extends AreaGame {
     Level currentLevel;
 
     private void initLevel(){
+        PLAYER_LEAVES_ONCE = true;
         currentLevel = new Level0();
         currentLevel.generateMap();
         currentLevel.addAreas(this);
@@ -60,17 +65,22 @@ public class ICRogue extends AreaGame {
     }
     if(player.isTransitioning())
         switchRoom();
-    if(!player.isAlive()){
-        player.leaveArea();
-        initLevel();
-    }
+    if(!player.isAlive())
+        {
+            if(PLAYER_LEAVES_ONCE)
+            {
+                player.gameOver();
+                player.leaveArea();
+                PLAYER_LEAVES_ONCE = false;
+            }
+        }
     resetMotion();
     }
 
     public void resetMotion(){
         Keyboard keyboard = getWindow().getKeyboard();
         Button b = keyboard.get(Keyboard.R);
-        if( b.isDown() ) {
+        if( b.isPressed() ) {
             player.leaveArea();
             initLevel();
         }

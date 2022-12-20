@@ -8,13 +8,14 @@ import java.util.List;
 
 public class Level0 extends Level{
     private DiscreteCoordinates playerRoomTransitionPosition = new DiscreteCoordinates(0, 2);
-    private final RoomType[] RoomTypes = {RoomType.TurretRoom, RoomType.StaffRoom, RoomType.BossKey, RoomType.SpawnRoom, RoomType.NormalRoom};
-    public Level0(){super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1}, 4, 2);}
+    private final RoomType[] RoomTypes = {RoomType.StaffRoom, RoomType.TurretRoom, RoomType.BossKey,
+            RoomType.SpawnRoom, RoomType.NormalRoom};
+    public Level0(){super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1}, 4, 6);}
     private final int PART_1_KEY_ID = 2;
     private final int BOSS_KEY_ID = 3;
     private final DiscreteCoordinates BOSS_ROOM = new DiscreteCoordinates(0, 0);
     public String getTitle(){
-        return "icrogue/level021";
+        return departureRoom;
     }
     public void generateFixedMap(){
         //generateMap1();
