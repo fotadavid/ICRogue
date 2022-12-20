@@ -1,15 +1,25 @@
 package ch.epfl.cs107.play.game.icrogue.area;
 
+import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+
+import java.util.Collections;
 
 
 public class Level0 extends Level{
     private DiscreteCoordinates playerRoomTransitionPosition = new DiscreteCoordinates(0, 2);
+    enum RoomType{StaffRoom, TurretRoom, BossKey, SpawnRoom, NormalRoom}
     private final RoomType[] RoomTypes = {RoomType.StaffRoom, RoomType.TurretRoom, RoomType.BossKey,
             RoomType.SpawnRoom, RoomType.NormalRoom};
-    public Level0(){super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1},
-            4, 6);}
+    private int[] roomsDistribution;
+    private DiscreteCoordinates startPosition;
+    public Level0(){
+        super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1}, 4, 6);
+        roomsDistribution = new int[]{1, 1, 1, 1, 1};
+        startPosition = new DiscreteCoordinates(1, 0);
+        departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
+    }
     private final int PART_1_KEY_ID = 2;
     private final int BOSS_KEY_ID = 3;
     private final DiscreteCoordinates BOSS_ROOM = new DiscreteCoordinates(0, 0);
@@ -19,6 +29,48 @@ public class Level0 extends Level{
     public void generateFixedMap(){
         //generateMap1();
         generateMap2();
+    }
+    //method that has to be implemeted in each level
+    public void generateRandomMap(){
+        MapState[][] RoomPlacement = generateRandomRoomPlacement();
+        setRoom(bossRoom, new Level0TurretRoom(bossRoom));
+        for( int i = 0; i < roomsDistribution.length; i++ ){
+            Collections.shuffle(availableLocations);
+            for( int j = 0; j < roomsDistribution[i]; j++ ){
+                DiscreteCoordinates location = availableLocations.get(j);
+                switch (i){
+                    case 0:
+                        setRoom(location, new Level0StaffRoom(location));
+                        availableLocations.remove(j);
+                        RoomPlacement[location.x][location.y] = MapState.CREATED;
+                        break;
+                    case 1:
+                        setRoom(location, new Level0TurretRoom(location));
+                        availableLocations.remove(j);
+                        RoomPlacement[location.x][location.y] = MapState.CREATED;
+                        break;
+                    case 2:
+                        bossKey = RandomHelper.roomGenerator.nextInt(0, 80);
+                        setRoom(location, new Level0KeyRoom(location, bossKey));
+                        availableLocations.remove(j);
+                        RoomPlacement[location.x][location.y] = MapState.CREATED;
+                        break;
+                    case 3:
+                        setRoom(location, new Level0Room(location));
+                        startPosition = location;
+                        availableLocations.remove(j);
+                        RoomPlacement[location.x][location.y] = MapState.CREATED;
+                        break;
+                    case 4:
+                        setRoom(location, new Level0Room(location));
+                        availableLocations.remove(j);
+                        RoomPlacement[location.x][location.y] = MapState.CREATED;
+                        break;
+                }
+            }
+        }
+        departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
+        setUpConnector(RoomPlacement);
     }
     protected void setUpConnector(MapState[][] RoomPlacement)
     {
@@ -31,7 +83,7 @@ public class Level0 extends Level{
                             setRoomConnector(new DiscreteCoordinates(i, j),
                                     "icrogue/level0" + i + (j - 1), Level0Room.Level0Connectors.N);
                             if(RoomPlacement[i][j - 1].equals(MapState.BOSS_ROOM)) {
-                                lockRoomConnector(new DiscreteCoordinates(i, j), 
+                                lockRoomConnector(new DiscreteCoordinates(i, j),
                                         Level0Room.Level0Connectors.N, bossKey);
                             }
                         }
