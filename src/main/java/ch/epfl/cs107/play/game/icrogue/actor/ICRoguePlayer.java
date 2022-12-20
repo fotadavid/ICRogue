@@ -271,7 +271,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
     public boolean isAlive(){return isAlive;}
     public void gameOver(){
-        Foreground gameOver = new Foreground(getOwnerArea(), new RegionOfInterest(5, 5, 1200, 2000), "icrogue/GameOverRestart");
+        Foreground gameOver = new Foreground(getOwnerArea(), new RegionOfInterest(5, 5, 1200, 2000),
+                "icrogue/GameOverRestart");
         getOwnerArea().registerActor(gameOver);
     }
     @Override

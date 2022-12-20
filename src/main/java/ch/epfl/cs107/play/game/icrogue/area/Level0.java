@@ -2,15 +2,14 @@ package ch.epfl.cs107.play.game.icrogue.area;
 
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.*;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Level0 extends Level{
     private DiscreteCoordinates playerRoomTransitionPosition = new DiscreteCoordinates(0, 2);
     private final RoomType[] RoomTypes = {RoomType.StaffRoom, RoomType.TurretRoom, RoomType.BossKey,
             RoomType.SpawnRoom, RoomType.NormalRoom};
-    public Level0(){super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1}, 4, 6);}
+    public Level0(){super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1},
+            4, 6);}
     private final int PART_1_KEY_ID = 2;
     private final int BOSS_KEY_ID = 3;
     private final DiscreteCoordinates BOSS_ROOM = new DiscreteCoordinates(0, 0);
@@ -32,7 +31,8 @@ public class Level0 extends Level{
                             setRoomConnector(new DiscreteCoordinates(i, j),
                                     "icrogue/level0" + i + (j - 1), Level0Room.Level0Connectors.N);
                             if(RoomPlacement[i][j - 1].equals(MapState.BOSS_ROOM)) {
-                                lockRoomConnector(new DiscreteCoordinates(i, j), Level0Room.Level0Connectors.N, bossKey);
+                                lockRoomConnector(new DiscreteCoordinates(i, j), 
+                                        Level0Room.Level0Connectors.N, bossKey);
                             }
                         }
                     if (j + 2 <= RoomPlacement[0].length)
@@ -40,7 +40,8 @@ public class Level0 extends Level{
                             setRoomConnector(new DiscreteCoordinates(i, j),
                                     "icrogue/level0" + i + (j + 1), Level0Room.Level0Connectors.S);
                             if(RoomPlacement[i][j + 1].equals(MapState.BOSS_ROOM)) {
-                                lockRoomConnector(new DiscreteCoordinates(i, j), Level0Room.Level0Connectors.S, bossKey);
+                                lockRoomConnector(new DiscreteCoordinates(i, j),
+                                        Level0Room.Level0Connectors.S, bossKey);
                             }
                         }
                     if (i - 1 >= 0)
@@ -48,7 +49,8 @@ public class Level0 extends Level{
                             setRoomConnector(new DiscreteCoordinates(i, j),
                                     "icrogue/level0" + (i - 1) + j, Level0Room.Level0Connectors.E);
                             if(RoomPlacement[i - 1][j].equals(MapState.BOSS_ROOM)) {
-                                lockRoomConnector(new DiscreteCoordinates(i, j), Level0Room.Level0Connectors.E, bossKey);
+                                lockRoomConnector(new DiscreteCoordinates(i, j),
+                                        Level0Room.Level0Connectors.E, bossKey);
                             }
                         }
                     if (i + 2 <= RoomPlacement.length)
@@ -56,7 +58,8 @@ public class Level0 extends Level{
                             setRoomConnector(new DiscreteCoordinates(i, j),
                                     "icrogue/level0" + (i + 1) + j, Level0Room.Level0Connectors.W);
                             if(RoomPlacement[i + 1][j].equals(MapState.BOSS_ROOM)) {
-                                lockRoomConnector(new DiscreteCoordinates(i, j), Level0Room.Level0Connectors.W, bossKey);
+                                lockRoomConnector(new DiscreteCoordinates(i, j),
+                                        Level0Room.Level0Connectors.W, bossKey);
                             }
                         }
                 }
