@@ -22,7 +22,6 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +43,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private float dt = 0;
     private final float SPEED_TIME = 4.f;
     private float hp;
+
     private boolean isAlive = true;
 
     /// Animation duration in frame number
@@ -57,9 +57,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
         this.hp = 10;
-        message = new TextGraphics(Integer.toString((int) hp), 0.4f, Color.BLUE);
-        message.setParent(this);
-        message.setAnchor(new Vector(-0.3f, 0.1f));
+        message = new TextGraphics("HP :" + hp, 1f, Color.WHITE, null, 1, true, false, new Vector(7.1f, 9.4f));
+
         //bas
         sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
         sprite11 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 0, 16, 32), new Vector(.15f, -.15f));
@@ -109,13 +108,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             CoinCollection = false;
             dt = 0;
         }
-        message.setText(Integer.toString((int)hp));
         if(hp <= 0 && UNREGISTER_ONCE) {
             UNREGISTER_ONCE = false;
             gameOver();
             getOwnerArea().unregisterActor(this);
         }
         super.update(deltaTime);
+        if(hp < 6){
+            message = new TextGraphics("HP :" + hp, 1f, Color.RED, null, 1, true, false, new Vector(7.1f, 9.4f));
+        }
+        message.setText("HP :" + hp);
 
     }
     public boolean draw(Canvas canvas) {
@@ -302,7 +304,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
         public void interactWith(DarkLord boss, boolean isCellInteraction){
             if(isCellInteraction)
-                boss.setHp(boss.getHp() - 5);
+                boss.setHp(boss.getHp() - 2);
         }
     }
     public boolean isAlive(){return isAlive;}

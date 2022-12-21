@@ -1,5 +1,6 @@
 package ch.epfl.cs107.play.game.icrogue.actor.enemies;
 
+import ch.epfl.cs107.play.game.actor.TextGraphics;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
@@ -15,6 +16,7 @@ import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.awt.*;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +36,11 @@ public class DarkLord extends ICRogueActor {
     private boolean attackOnce = true, turnOnce = true;
     private int rotationCounter;
     private boolean isAlive = true;
+    private TextGraphics message;
     private int hp = 10;
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        message = new TextGraphics("HP BO$$ : " + getHp(), 1f, Color.blue, null, 1, true, false, new Vector(0.7f, 0.4f));
         for( int i = 0; i < 4; i++ )
             sprites[i] = new Sprite("zelda/darkLord", 1.5f, 1.5f, this,
                     new RegionOfInterest(0, i*32, 32, 32));
@@ -81,6 +85,7 @@ public class DarkLord extends ICRogueActor {
     }
     public void update(float deltaTime){
         super.update(deltaTime);
+        message.setText("HP BO$$:" + hp);
         if(hp <= 0)
             die();
         spellAnimation.update(deltaTime);
@@ -153,6 +158,7 @@ public class DarkLord extends ICRogueActor {
             spellAnimation.draw(canvas);
         else if(isAlive)
             currentSprite.draw(canvas);
+        message.draw(canvas);
         return false;
     }
     public void die(){

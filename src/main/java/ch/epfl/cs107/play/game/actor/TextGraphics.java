@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.actor;
 
 import java.awt.Color;
 
+import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.math.Attachable;
 import ch.epfl.cs107.play.math.Node;
 import ch.epfl.cs107.play.math.TextAlign;
