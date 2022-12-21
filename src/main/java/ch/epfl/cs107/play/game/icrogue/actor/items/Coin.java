@@ -32,11 +32,12 @@ public class Coin extends Item{
         //coin = new Sprite("zelda/coin", .5f, .5f, this);
     }
 
-
     public String getTitle() {
         return "zelda/coin";
     }
 
+    // draws the coin on the game screen
+    // if it hasn't been collected
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -50,6 +51,7 @@ public class Coin extends Item{
         return false;
     }
 
+    // returns a list of DiscreteCoordinates representing the cells that the coin occupies
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -66,7 +68,9 @@ public class Coin extends Item{
         return true;
     }
 
-
+    // a boolean indicating whether the interaction
+    // is a cell interaction or a view interaction
+    // calls the appropriate interaction method on the visitor
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);

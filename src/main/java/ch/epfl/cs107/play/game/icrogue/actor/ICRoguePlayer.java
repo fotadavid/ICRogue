@@ -32,12 +32,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean UNREGISTER_ONCE = true;
     private boolean isTransitioning = false;
     private String destination;
-    private boolean speedDone = true;
     private DiscreteCoordinates arrivalCoordinates;
     private List<Integer> keyChain = new ArrayList<Integer>();
     private TextGraphics message;
     private Sprite sprite1, sprite11, sprite12, sprite13, sprite2, sprite21, sprite22, sprite23,  sprite3,  sprite31,  sprite32, sprite33, sprite4, sprite41, sprite42, sprite43;
     private Sprite currentsprite;
+
     private Fire fire;
     private float hp;
     private boolean isAlive = true;
@@ -49,8 +49,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      *
      */
     private int arrayIndex = 0;
-    private float dt = 0;
-    private final float SPEED_DURATION = 4.f;
     private Sprite[] movementArray1, movementArray2, movementArray3, movementArray4;
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
@@ -108,15 +106,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
-        if(CoinCollection && speedDone) {
-            energyBoost();
-            dt+=deltaTime;
-            if(dt >= SPEED_DURATION){
-                speedDone = false;
-                MOVE_DURATION = 7;
-            }
-
-        }
+        energyBoost();
         message.setText(Integer.toString((int)hp));
         if(hp <= 0 && UNREGISTER_ONCE) {
             UNREGISTER_ONCE = false;
@@ -142,8 +132,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
 
     public void energyBoost() {
-        if (CoinCollection)
-             MOVE_DURATION = 4;
+        if (CoinCollection) {
+             MOVE_DURATION = 3;
+        }
     }
 
     /**
@@ -195,9 +186,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         area.registerActor(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
-        CoinCollection = false;
-        speedDone = true;
-        dt = 0;
+
         resetMotion();
     }
     public void setHp(float hp)

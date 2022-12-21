@@ -21,6 +21,7 @@ public class ICRogueActor extends MovableAreaEntity {
         super(area, orientation, position);
     }
 
+    // all the following methods that can be implemented by any concrete subclass of ICRogueActor
     @Override
     public boolean draw(Canvas canvas) {
         return false;

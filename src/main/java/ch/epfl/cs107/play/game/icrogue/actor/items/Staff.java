@@ -32,17 +32,19 @@ public class Staff extends Item{
         //staff = new Sprite("zelda/staff_water.icon", .5f, .5f, this);
     }
 
-
     public String getTitle() {
         return "zelda/staff";
     }
 
+    // update the state of te game
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         currentAnimation.update(deltaTime);
     }
 
+    // draws the staff on the game screen
+    // if it hasn't been collected
     @Override
     public boolean draw(Canvas canvas) {
         if(!this.isCollected())
@@ -50,11 +52,13 @@ public class Staff extends Item{
         return false;
     }
 
+    // returns a list of DiscreteCoordinates representing the cells that the staff occupies
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
+    // boolean to check whether the object has been collected or not
     @Override
     public boolean takeCellSpace() {
         if(!this.isCollected())
@@ -62,12 +66,14 @@ public class Staff extends Item{
         return false;
     }
 
-
     @Override
     public boolean isViewInteractable() {
         return true;
     }
 
+    // a boolean indicating whether the interaction
+    // is a cell interaction or a view interaction
+    // calls the appropriate interaction method on the visitor
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
