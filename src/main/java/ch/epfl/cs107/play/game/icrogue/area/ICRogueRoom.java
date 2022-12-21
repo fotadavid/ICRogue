@@ -16,13 +16,13 @@ import java.util.List;
 
 public abstract class ICRogueRoom extends Area {
 
-    private ICRogueBehavior behavior;
-    private String behaviorName;
-    private List<Connector> connectors = new ArrayList<Connector>();
-    private DiscreteCoordinates roomCoordinates;
-    private List<DiscreteCoordinates> connectorsCoordinates;
-    private List<Orientation> orientations;
-    private List <String> connectorDestinationRooms;
+    private ICRogueBehavior behavior; // field for the behavior of the room
+    private String behaviorName; // field for the name of the behavior
+    private List<Connector> connectors = new ArrayList<Connector>(); //list to store the connectors of the room
+    private DiscreteCoordinates roomCoordinates; // field to store the coordinates of the room
+    private List<DiscreteCoordinates> connectorsCoordinates; // list to store the coordinates of the connectors
+    private List<Orientation> orientations; // list to store the orientations of the connectors
+    private List <String> connectorDestinationRooms; // list to store the names of the destination rooms for the connectors
     public ICRogueRoom(List<DiscreteCoordinates> connectorsCoordinates, List<Orientation> orientations,
                        List <String> connectorDestinationRooms, String behaviorName, DiscreteCoordinates roomCoordinates)
     {
@@ -31,10 +31,14 @@ public abstract class ICRogueRoom extends Area {
         this.connectorsCoordinates = connectorsCoordinates;
         this.orientations = orientations;
         this.connectorDestinationRooms = connectorDestinationRooms;
+        // creates a Connector object for each set of coordinates, orientation, and destination room name
+        // and adds it to the list of connectors
         for( int i = 0; i < connectorsCoordinates.size(); i++ ) {
             connectors.add(new Connector(this, orientations.get(i), connectorsCoordinates.get(i), connectorDestinationRooms.get(i)));
         }
     }
+
+    // gets the list of connectors
     public List<Connector> getConnectors(){
         return connectors;
     }
@@ -56,31 +60,34 @@ public abstract class ICRogueRoom extends Area {
         for(Connector connector : connectors)
             registerActor(connector);
     };
-
-    // EnigmeArea extends Area
-
     @Override
     public final float getCameraScaleFactor() {
         return 11;
     }
 
+    // gets the spawn position for the player in the area
     public abstract DiscreteCoordinates getPlayerSpawnPosition();
 
+    // updates the state of the connectors based what buttons are pressed
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        Keyboard keyboard = this.getKeyboard();
-         if(keyboard.get(Keyboard.O).isPressed())
+        Keyboard keyboard = this.getKeyboard(); // gets the keyboard input
+        // if "O" is pressed, all connectors are set to the OPEN state
+        if(keyboard.get(Keyboard.O).isPressed())
             for(Connector connector : connectors)
                 connector.setCurrentState(Connector.ConnectorType.OPEN);
-         else if(keyboard.get(Keyboard.T).isPressed())
+        // if "T" is pressed, all connectors are set to the CLOSED state
+        else if(keyboard.get(Keyboard.T).isPressed())
              for(Connector connector : connectors)
                  connector.setCurrentState(Connector.ConnectorType.CLOSED);
-         else if(keyboard.get(Keyboard.L).isPressed())
+             // if "L" is pressed, all connectors with coordinates (0,4) are set to the LOCKED state
+        else if(keyboard.get(Keyboard.L).isPressed())
              for(Connector connector : connectors)
                  if( connector.getCoordinates().equals(new DiscreteCoordinates(0, 4)))
                      connector.setCurrentState(Connector.ConnectorType.LOCKED);
-
+             // If the logic method returns true,
+            // all connectors that are CLOSED are sets to the OPEN state
              if(logic() == true)
                  for(Connector connector : connectors) {
                      if (connector.getType() == Connector.ConnectorType.CLOSED)
@@ -89,6 +96,7 @@ public abstract class ICRogueRoom extends Area {
 
     }
 
+    // boolean indicating whether the task of the room has been completed or not
     public boolean logic(){
         getPlayerSpawnPosition();
         if(enterAreaCells()){
