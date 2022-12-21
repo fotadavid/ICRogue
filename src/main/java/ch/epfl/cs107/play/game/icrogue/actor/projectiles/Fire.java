@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.icrogue.actor.projectiles;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
@@ -28,11 +29,20 @@ public class Fire extends Projectile {
     private Keyboard keyboard;
 
     private final static int MOVE_DURATION = 8;
+    private Sprite[] sprites = new Sprite[7];
+    private Animation currentAnimation;
 
 
     public Fire(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        fire = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16), new Vector(0, 0));
+        //fire = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16), new Vector(0, 0));
+        for( int i = 0; i < 7; i++ )
+            sprites[i] = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(i * 16, 0, 16, 16));
+        currentAnimation = new Animation(10, sprites);
+        currentAnimation.setSpeedFactor(5);
+        currentAnimation.setAnchor(new Vector(0, 0));
+        currentAnimation.setWidth(1f);
+        currentAnimation.setHeight(1f);
         damagePoints = 1;
         framePoints = 5;
     }
@@ -43,6 +53,7 @@ public class Fire extends Projectile {
 
     @Override
     public void update(float deltaTime) {
+        currentAnimation.update(deltaTime);
         move(5);
         super.update(deltaTime);
         if(isConsumed())
@@ -51,7 +62,8 @@ public class Fire extends Projectile {
 
     @Override
     public boolean draw(Canvas canvas) {
-        fire.draw(canvas);
+        currentAnimation.draw(canvas);
+        //fire.draw(canvas);
         return false;
     }
 

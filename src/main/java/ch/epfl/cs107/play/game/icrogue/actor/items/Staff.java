@@ -1,11 +1,14 @@
 package ch.epfl.cs107.play.game.icrogue.actor.items;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RegionOfInterest;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
@@ -14,10 +17,19 @@ import java.util.List;
 public class Staff extends Item{
 
     private Sprite staff;
+    private Sprite[] sprites = new Sprite[8];
+    private Animation currentAnimation;
 
     public Staff(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        staff = new Sprite("zelda/staff_water.icon", .5f, .5f, this);
+        for(int i = 0; i < 8; i++)
+            sprites[i] = new Sprite("zelda/staff", 1f, 1f, this, new RegionOfInterest(i * 32, 0, 32, 32));
+        currentAnimation = new Animation(10, sprites);
+        currentAnimation.setSpeedFactor(5);
+        currentAnimation.setAnchor(new Vector(0, 0));
+        currentAnimation.setHeight(1f);
+        currentAnimation.setHeight(1f);
+        //staff = new Sprite("zelda/staff_water.icon", .5f, .5f, this);
     }
 
 
@@ -26,9 +38,15 @@ public class Staff extends Item{
     }
 
     @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        currentAnimation.update(deltaTime);
+    }
+
+    @Override
     public boolean draw(Canvas canvas) {
         if(!this.isCollected())
-            staff.draw(canvas);
+            currentAnimation.draw(canvas);
         return false;
     }
 

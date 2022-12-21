@@ -38,6 +38,7 @@ public abstract class Level {
     private DiscreteCoordinates startPosition;
     private boolean randomMap;
     private int[] roomsDistribution;
+    protected MapState[][] RoomPlacement;
 
     Level(boolean randomMap, DiscreteCoordinates startPosition, int[] roomsDistribution, int width, int height) {
         this.randomMap = randomMap;
@@ -95,7 +96,20 @@ public abstract class Level {
         else generateRandomMap();
     }
     public abstract void generateFixedMap();
-    public abstract void generateRandomMap();
+    public abstract void createTypeRoom(int index, DiscreteCoordinates location);
+    public void generateRandomMap(){
+        RoomPlacement = generateRandomRoomPlacement();
+        setRoom(bossRoom, new Level0TurretRoom(bossRoom));
+        for( int i = 0; i < roomsDistribution.length; i++ ){
+            Collections.shuffle(availableLocations);
+            for( int j = 0; j < roomsDistribution[i]; j++ ){
+                DiscreteCoordinates location = availableLocations.get(j);
+                createTypeRoom(i, location);
+                availableLocations.remove(j);
+            }
+        }
+        setUpConnector(RoomPlacement);
+    }
     protected List<DiscreteCoordinates> availableLocations = new ArrayList<>();
     public MapState[][] generateRandomRoomPlacement() {
         availableLocations.clear();

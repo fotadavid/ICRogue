@@ -31,47 +31,34 @@ public class Level0 extends Level{
         generateMap2();
     }
     //method that has to be implemeted in each level
-    public void generateRandomMap(){
-        MapState[][] RoomPlacement = generateRandomRoomPlacement();
-        setRoom(bossRoom, new Level0TurretRoom(bossRoom));
-        for( int i = 0; i < roomsDistribution.length; i++ ){
-            Collections.shuffle(availableLocations);
-            for( int j = 0; j < roomsDistribution[i]; j++ ){
-                DiscreteCoordinates location = availableLocations.get(j);
-                switch (i){
-                    case 0:
-                        setRoom(location, new Level0StaffRoom(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 1:
-                        setRoom(location, new Level0TurretRoom(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 2:
-                        bossKey = RandomHelper.roomGenerator.nextInt(0, 80);
-                        setRoom(location, new Level0KeyRoom(location, bossKey));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 3:
-                        setRoom(location, new Level0Room(location));
-                        startPosition = location;
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 4:
-                        setRoom(location, new Level0Room(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                }
-            }
+    public void createTypeRoom(int index, DiscreteCoordinates location){
+        switch (index){
+            case 0:
+                setRoom(location, new Level0StaffRoom(location));
+                RoomPlacement[location.x][location.y] = MapState.CREATED;
+                break;
+            case 1:
+                setRoom(location, new Level0TurretRoom(location));
+                RoomPlacement[location.x][location.y] = MapState.CREATED;
+                break;
+            case 2:
+                bossKey = RandomHelper.roomGenerator.nextInt(0, 80);
+                setRoom(location, new Level0KeyRoom(location, bossKey));
+                RoomPlacement[location.x][location.y] = MapState.CREATED;
+                break;
+            case 3:
+                setRoom(location, new Level0Room(location));
+                startPosition = location;
+                RoomPlacement[location.x][location.y] = MapState.CREATED;
+                break;
+            case 4:
+                setRoom(location, new Level0Room(location));
+                RoomPlacement[location.x][location.y] = MapState.CREATED;
+                break;
         }
         departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
-        setUpConnector(RoomPlacement);
     }
+    //method that has to be implemented by each level
     protected void setUpConnector(MapState[][] RoomPlacement)
     {
         for( int i = 0; i < RoomPlacement.length; i++ )
