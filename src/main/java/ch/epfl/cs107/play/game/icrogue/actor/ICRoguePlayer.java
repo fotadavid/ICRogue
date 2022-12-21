@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
+import ch.epfl.cs107.play.game.icrogue.actor.items.Coin;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean StaffCollection = false;
+    private boolean CoinCollection = false;
     private boolean UNREGISTER_ONCE = true;
     private boolean isTransitioning = false;
     private String destination;
@@ -41,7 +43,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean isAlive = true;
 
     /// Animation duration in frame number
-    final static int MOVE_DURATION = 7;
+   private int MOVE_DURATION = 7;
     /**
      * Demo actor
      *
@@ -104,6 +106,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
+        energyBoost();
         message.setText(Integer.toString((int)hp));
         if(hp <= 0 && UNREGISTER_ONCE) {
             UNREGISTER_ONCE = false;
@@ -125,6 +128,12 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         if (b.isPressed() && StaffCollection) {
             fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
             getOwnerArea().registerActor(fire);
+        }
+    }
+
+    public void energyBoost() {
+        if (CoinCollection) {
+             MOVE_DURATION = 3;
         }
     }
 
@@ -248,6 +257,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(!isCellInteraction) {
                 staff.collect();
                 StaffCollection = true;
+            }
+        }
+
+        public void interactWith(Coin coin, boolean isCelInteraction)
+        {
+            if(isCelInteraction) {
+                coin.collect();
+                CoinCollection = true;
             }
         }
         public void interactWith(Key key, boolean isCellInteraction)
