@@ -23,7 +23,7 @@ import java.util.List;
 public class ICRogue extends AreaGame {
     public final static float CAMERA_SCALE_FACTOR = 13.f;
     public final static String ROOM = "icrogue/Level0Room";
-    private ICRoguePlayer player; // creer iCROGUe player
+    private ICRoguePlayer player;
     private boolean YOU_LOST_ONCE = true;
     private boolean PLAYER_LEAVES_ONCE = true;
     private final String[] areas = {ROOM};
@@ -37,7 +37,9 @@ public class ICRogue extends AreaGame {
     ICRogueRoom currentRoom;
     Level currentLevel;
 
-    //méthode chargée de mettre en place le niveau
+    // initializes the game by creating a new instance of Level0 and generating a fixed map
+    // then adds the areas in the level, sets the player's current area to the level's title,
+    // and creates a new player character at a specific location
     private void initLevel(){
         PLAYER_LEAVES_ONCE = true;
         currentLevel = new Level0();
@@ -47,6 +49,8 @@ public class ICRogue extends AreaGame {
         player = new ICRoguePlayer(area, Orientation.DOWN, new DiscreteCoordinates(2, 2),"zelda/player");
         player.enterArea(area, new DiscreteCoordinates(2, 2));
     }
+
+    // is called when the game starts, and it initializes the level by calling initLevel()
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
@@ -55,6 +59,11 @@ public class ICRogue extends AreaGame {
         }
         return false;
     }
+
+    // updates the game's state
+    // if the player is not alive it prints "You Lost! Try Again"
+    // and removes the player from the current area and re-initializes the level
+    // if the player is transitioning between areas, it calls the switchRoom() method
 
 @Override
     public void update(float deltaTime) {
@@ -78,7 +87,8 @@ public class ICRogue extends AreaGame {
     resetMotion();
     }
 
-    //faire une réinitialisation du jeu
+    //  resets the player's motion if the "R" key on the keyboard is pressed
+    //  if it is, the player is removed from the current area and the level is re-initialized
     public void resetMotion(){
         Keyboard keyboard = getWindow().getKeyboard();
         Button b = keyboard.get(Keyboard.R);
@@ -87,15 +97,22 @@ public class ICRogue extends AreaGame {
             initLevel();
         }
     }
+
+    // is called when the game ends
     @Override
     public void end() {
     }
 
+    // returns the title of the game as a string
     @Override
     public String getTitle() {
 
         return "ICRogue";
     }
+
+    // switch the player to a different area when the player moves between rooms
+    // removes the player from the current area, sets the player's transition state to "false",
+    // and sets the player's current area to the destination specified in the player's destination field
 
     protected void switchRoom()
     {
@@ -110,6 +127,8 @@ public class ICRogue extends AreaGame {
             player.enterArea(area, new DiscreteCoordinates(1, 5));
         else player.enterArea(area, new DiscreteCoordinates(8, 5));
     }
+
+    // returns a list of the player's current main cell coordinates
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(player.getCurrentMainCellCoordinates());
     }
