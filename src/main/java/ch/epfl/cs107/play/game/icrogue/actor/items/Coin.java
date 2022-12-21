@@ -31,7 +31,6 @@ public class Coin extends Item{
         currentAnimation.setHeight(.8f);
         //coin = new Sprite("zelda/coin", .5f, .5f, this);
     }
-
     public String getTitle() {
         return "zelda/coin";
     }
@@ -65,7 +64,7 @@ public class Coin extends Item{
 
     @Override
     public boolean isViewInteractable() {
-        return true;
+        return false;
     }
 
     // a boolean indicating whether the interaction
@@ -78,6 +77,8 @@ public class Coin extends Item{
 
     @Override
     public boolean isCellInteractable() {
+        if(isCollected())
+            return false;
         return true;
     }
 

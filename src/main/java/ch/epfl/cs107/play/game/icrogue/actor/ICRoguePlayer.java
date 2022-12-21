@@ -187,7 +187,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      * @param position (DiscreteCoordinates): initial position, not null
      */
     public void enterArea(Area area, DiscreteCoordinates position){
-        area.registerActor(this);
+        if(isAlive)
+            area.registerActor(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
         resetMotion();
@@ -268,6 +269,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(isCelInteraction) {
                 coin.collect();
                 CoinCollection = true;
+                getOwnerArea().unregisterActor(coin);
             }
         }
         public void interactWith(Key key, boolean isCellInteraction)

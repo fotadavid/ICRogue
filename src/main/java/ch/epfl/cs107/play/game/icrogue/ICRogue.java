@@ -88,12 +88,11 @@ public class ICRogue extends AreaGame {
     }
 
     //  resets the player's motion if the "R" key on the keyboard is pressed
-    //  if it is, the player is removed from the current area and the level is re-initialized
+    //  if it is, the level is re-initialized
     public void resetMotion(){
         Keyboard keyboard = getWindow().getKeyboard();
         Button b = keyboard.get(Keyboard.R);
         if( b.isPressed() ) {
-            player.leaveArea();
             initLevel();
         }
     }

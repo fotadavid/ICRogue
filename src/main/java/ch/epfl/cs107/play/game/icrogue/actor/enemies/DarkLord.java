@@ -17,10 +17,8 @@ import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.awt.*;
-import java.nio.channels.spi.SelectorProvider;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class DarkLord extends ICRogueActor {
     private final Sprite[] sprites = new Sprite[4];
@@ -30,7 +28,7 @@ public class DarkLord extends ICRogueActor {
     private boolean isAttacking = false;
     private final Sprite[][] spellSprites = new Sprite[4][3];
     private Animation spellAnimation;
-    private Sprite[] currentSpriteLine = new Sprite[3];
+    private Sprite[] currentSpriteLine;
     private Sprite currentSprite;
     private float dtAttack, dtRotation, dtFinal;
     private boolean attackOnce = true, turnOnce = true;
@@ -40,7 +38,8 @@ public class DarkLord extends ICRogueActor {
     private int hp = 10;
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        message = new TextGraphics("HP BO$$ : " + getHp(), 1f, Color.blue, null, 1, true, false, new Vector(0.7f, 0.4f));
+        message = new TextGraphics("HP BO$$ : " + getHp(), 1f, Color.BLUE,null, 1,
+                true, false, new Vector(0.7f, 0.2f));
         for( int i = 0; i < 4; i++ )
             sprites[i] = new Sprite("zelda/darkLord", 1.5f, 1.5f, this,
                     new RegionOfInterest(0, i*32, 32, 32));
@@ -176,7 +175,7 @@ public class DarkLord extends ICRogueActor {
     public boolean isCellInteractable() {
         return true;
     }
-    public boolean takeCellSpace() {return false;}
+    public boolean takeCellSpace() {return true;}
     @Override
     public boolean isAlive(){return isAlive;}
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {

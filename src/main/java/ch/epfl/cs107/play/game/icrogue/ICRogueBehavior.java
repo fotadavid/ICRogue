@@ -6,8 +6,11 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.DarkLord;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.SkullFire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.window.Window;
 
@@ -73,9 +76,13 @@ public class ICRogueBehavior extends AreaBehavior {
         }
         @Override
         protected boolean canEnter(Interactable entity) {
-            for(Interactable object : entities)
-                if(object.takeCellSpace() && object.getClass() != ICRoguePlayer.class)
+            for(Interactable object : entities) {
+                if((entity.getClass().equals(SkullFire.class) || entity.getClass().equals(Fire.class)) && object.getClass().equals(DarkLord.class))
+                    return type.isWalkable;
+                if (object.takeCellSpace() && object.getClass() != ICRoguePlayer.class) {
                     return false;
+                }
+            }
             return type.isWalkable;
         }
 

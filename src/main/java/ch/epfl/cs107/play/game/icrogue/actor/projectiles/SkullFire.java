@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.DarkLord;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -33,7 +34,6 @@ public class SkullFire extends Projectile {
     private final static int MOVE_DURATION = 10;
     private Sprite[][] sprites = new Sprite[4][3];
     private Animation currentAnimation;
-
 
     public SkullFire(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
@@ -98,17 +98,17 @@ public class SkullFire extends Projectile {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 
-    ICRogueFireInteractionHandler handler = new ICRogueFireInteractionHandler();
-    private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler {
+    ICRogueSkullFireInteractionHandler handler = new ICRogueSkullFireInteractionHandler();
+    private class ICRogueSkullFireInteractionHandler implements ICRogueInteractionHandler {
         public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction) {
             switch (cell.getType()) {
                 case WALL, HOLE -> consume();
             }
         }
-        public void interactWith(ICRoguePlayer other, boolean isCellInteraction)
-        {
+        public void interactWith(ICRoguePlayer other, boolean isCellInteraction) {
             consume();
             other.setHp(other.getHp() - getDamage());
         }
+        public void interactWith(DarkLord boss, boolean isChellInteraction){}
     }
 }

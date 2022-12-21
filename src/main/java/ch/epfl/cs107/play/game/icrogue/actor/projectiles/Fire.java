@@ -71,7 +71,6 @@ public class Fire extends Projectile {
     @Override
     public boolean draw(Canvas canvas) {
         currentAnimation.draw(canvas);
-        //fire.draw(canvas);
         return false;
     }
 
@@ -113,10 +112,8 @@ public class Fire extends Projectile {
         }
         public void interactWith(DarkLord boss, boolean isCellInteraction)
         {
-            if(isCellInteraction){
                 consume();
                 boss.setHp(boss.getHp() - damagePoints);
-            }
         }
     }
 

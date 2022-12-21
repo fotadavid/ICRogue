@@ -20,13 +20,20 @@ public class Turret extends ICRogueActor {
     private final float COOLDOWN = 2.f;
     private Arrow arrow1, arrow2, arrow3, arrow4;
     private float dt;
+    private Orientation[] orientations;
     public Turret(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         turret = new Sprite("icrogue/static_npc", 1.5f, 1.5f, this, null,
                 new Vector(-0.25f, 0));
 
     }
+    public Turret(Area area, Orientation orientation, DiscreteCoordinates position, Orientation[] orientations) {
+        super(area, orientation, position);
+        this.orientations = orientations;
+        turret = new Sprite("icrogue/static_npc", 1.5f, 1.5f, this, null,
+                new Vector(-0.25f, 0));
 
+    }
     // returns a boolean value indicating whether the connector can be interacted with by other entities
     public boolean isCellInteractable() {
         return true;
@@ -52,16 +59,10 @@ public class Turret extends ICRogueActor {
             getOwnerArea().unregisterActor(this);
     }
 
-    // throws 4 Arrow objects in the four cardinal direction from the Turret's current position
+    // throws Arrow objects in the cardinal directions from each Turret's "orientations" list
     private void throwArrow() {
-            arrow1 = new Arrow(getOwnerArea(), Orientation.DOWN, getCurrentMainCellCoordinates());
-            getOwnerArea().registerActor(arrow1);
-            arrow2 = new Arrow(getOwnerArea(), Orientation.UP, getCurrentMainCellCoordinates());
-            getOwnerArea().registerActor(arrow2);
-            arrow3 = new Arrow(getOwnerArea(), Orientation.LEFT, getCurrentMainCellCoordinates());
-            getOwnerArea().registerActor(arrow3);
-            arrow4 = new Arrow(getOwnerArea(), Orientation.RIGHT, getCurrentMainCellCoordinates());
-            getOwnerArea().registerActor(arrow4);
+            for( Orientation orientation : orientations)
+                getOwnerArea().registerActor(new Arrow(getOwnerArea(), orientation, getCurrentMainCellCoordinates()));
     }
 
     // if Turret is alive, it draws its Turret Sprite on the game screen
