@@ -97,9 +97,10 @@ public abstract class Level {
     }
     public abstract void generateFixedMap();
     public abstract void createTypeRoom(int index, DiscreteCoordinates location);
+    public abstract void createBossRoom();
     public void generateRandomMap(){
         RoomPlacement = generateRandomRoomPlacement();
-        setRoom(bossRoom, new Level0TurretRoom(bossRoom));
+        createBossRoom();
         for( int i = 0; i < roomsDistribution.length; i++ ){
             Collections.shuffle(availableLocations);
             for( int j = 0; j < roomsDistribution[i]; j++ ){

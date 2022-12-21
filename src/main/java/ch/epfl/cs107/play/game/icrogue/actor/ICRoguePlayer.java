@@ -39,6 +39,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite currentsprite;
 
     private Fire fire;
+    private float dt = 0;
+    private final float SPEED_TIME = 4.f;
     private float hp;
     private boolean isAlive = true;
 
@@ -83,15 +85,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         currentsprite = sprite3;
     }
 
-
-   /* public void centerCamera() {
-        getOwnerArea().setViewCandidate(this);
-    }*/
-
-    /**
-     * Center the camera on the player
-     */
-
     @Override
     public void update(float deltaTime) {
 
@@ -107,6 +100,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
         energyBoost();
+        if(CoinCollection)
+            dt += deltaTime;
+        if(dt >= SPEED_TIME) {
+            MOVE_DURATION = 7;
+            CoinCollection = false;
+            dt = 0;
+        }
         message.setText(Integer.toString((int)hp));
         if(hp <= 0 && UNREGISTER_ONCE) {
             UNREGISTER_ONCE = false;
@@ -186,7 +186,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         area.registerActor(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
-
         resetMotion();
     }
     public void setHp(float hp)

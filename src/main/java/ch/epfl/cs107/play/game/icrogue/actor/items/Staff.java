@@ -29,7 +29,6 @@ public class Staff extends Item{
         currentAnimation.setAnchor(new Vector(0, 0));
         currentAnimation.setHeight(1f);
         currentAnimation.setHeight(1f);
-        //staff = new Sprite("zelda/staff_water.icon", .5f, .5f, this);
     }
 
     public String getTitle() {

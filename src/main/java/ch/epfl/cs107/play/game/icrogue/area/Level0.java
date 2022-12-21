@@ -15,7 +15,7 @@ public class Level0 extends Level{
     private int[] roomsDistribution;
     private DiscreteCoordinates startPosition;
     public Level0(){
-        super(true, new DiscreteCoordinates(1, 0), new int[]{1, 1, 1, 1, 1}, 4, 6);
+        super(true, new DiscreteCoordinates(1, 0), new int[]{1, 3, 1, 1, 1}, 4, 6);
         roomsDistribution = new int[]{1, 1, 1, 1, 1};
         startPosition = new DiscreteCoordinates(1, 0);
         departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
@@ -31,6 +31,9 @@ public class Level0 extends Level{
         generateMap2();
     }
     //method that has to be implemeted in each level
+    public void createBossRoom(){
+        setRoom(bossRoom, new Level0DarkLordRoom(bossRoom));
+    }
     public void createTypeRoom(int index, DiscreteCoordinates location){
         switch (index){
             case 0:
