@@ -8,7 +8,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
-import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.SkullFire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -22,9 +21,6 @@ import java.util.List;
 
 public class DarkLord extends ICRogueActor {
     private final Sprite[] sprites = new Sprite[4];
-    private final float COOLDOWN = .25f;
-    private final float COOLDOWN_END = .25f;
-    private final float ROTATION_COOLDOWN = .5f;
     private boolean isAttacking = false;
     private final Sprite[][] spellSprites = new Sprite[4][3];
     private Animation spellAnimation;
@@ -34,7 +30,7 @@ public class DarkLord extends ICRogueActor {
     private boolean attackOnce = true, turnOnce = true;
     private int rotationCounter;
     private boolean isAlive = true;
-    private TextGraphics message;
+    private final TextGraphics message;
     private int hp = 10;
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
@@ -89,6 +85,7 @@ public class DarkLord extends ICRogueActor {
             die();
         spellAnimation.update(deltaTime);
         dtAttack += deltaTime;
+        float COOLDOWN = .25f;
         if(dtAttack >= COOLDOWN){
             if(rotationCounter == 0) {
                 orientate(Orientation.DOWN);
@@ -115,12 +112,14 @@ public class DarkLord extends ICRogueActor {
                 if(attackOnce)
                     attack();
                 dtFinal += deltaTime;
+                float COOLDOWN_END = .25f;
                 if(dtFinal > COOLDOWN_END) {
                     rotationCounter = 0;
                     moveToRandomPosition();
                 }
             }
             dtRotation+=deltaTime;
+            float ROTATION_COOLDOWN = .5f;
             if(dtRotation >= ROTATION_COOLDOWN){
                 turnOnce = true;
                 attackOnce = true;

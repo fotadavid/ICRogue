@@ -305,8 +305,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
                 turret.die();
         }
         public void interactWith(DarkLord boss, boolean isCellInteraction){
-            if(isCellInteraction)
-                boss.setHp(boss.getHp() - 2);
+            if(isCellInteraction) {
+                setHp(getHp() - 1);
+                //if( getCurrentMainCellCoordinates())
+                move(MOVE_DURATION);
+            }
         }
     }
     public boolean isAlive(){return isAlive;}
