@@ -162,4 +162,5 @@ public class Sprite extends ImageGraphics {
 	public static Sprite[] extractSprites(String name, int nbFrames, float width, float height, Positionable parent, int regionWidth, int regionHeight){  	
 		return extractSprites(name, nbFrames, width, height, parent, Vector.ZERO, regionWidth, regionHeight);
 	}
+
 }
