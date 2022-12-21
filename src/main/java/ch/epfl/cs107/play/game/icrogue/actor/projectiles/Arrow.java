@@ -82,10 +82,8 @@ public class Arrow extends Projectile{
         }
         public void interactWith(ICRoguePlayer other, boolean isCellInteraction)
         {
-            if(isCellInteraction) {
-                consume();
-                other.setHp(other.getHp() - getDamage());
-            }
+            consume();
+            other.setHp(other.getHp() - getDamage());
         }
     }
 

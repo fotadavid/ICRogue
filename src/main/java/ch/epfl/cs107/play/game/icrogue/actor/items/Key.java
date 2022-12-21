@@ -13,8 +13,8 @@ import java.util.List;
 
 // constructor class
 public class Key extends Item{
-    private int keyId;
-    private Sprite key;
+    private final int keyId;
+    private final Sprite key;
     public Key(Area area, Orientation orientation, DiscreteCoordinates position, int value)
     {
         super(area, orientation, position);

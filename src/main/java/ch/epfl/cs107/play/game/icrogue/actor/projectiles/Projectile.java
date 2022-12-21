@@ -31,6 +31,7 @@ public abstract class Projectile extends ICRogueActor implements Interactor {
 
     public void consume() {
         isConsumed = true;
+        getOwnerArea().unregisterActor(this);
     }
 
     public boolean isConsumed() {
