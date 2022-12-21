@@ -7,7 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
-import ch.epfl.cs107.play.game.icrogue.actor.enemies.DarkLord;
+import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
@@ -22,42 +22,51 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class Fire extends Projectile {
+public class SkullFire extends Projectile {
 
     private int damagePoints; // representing the amount of damage that the fire causes
     private int framePoints; // representing value related to the fire's movement
+    private boolean turnOnce = true;
     private Sprite fire;
     private Keyboard keyboard;
 
-    private final static int MOVE_DURATION = 8;
-    private Sprite[] sprites = new Sprite[7];
+    private final static int MOVE_DURATION = 10;
+    private Sprite[][] sprites = new Sprite[4][3];
     private Animation currentAnimation;
 
 
-    public Fire(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public SkullFire(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-        //fire = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16), new Vector(0, 0));
-        for( int i = 0; i < 7; i++ )
-            // initializes each element of the array with a new Sprite object
-            sprites[i] = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(i * 16, 0, 16, 16));
-        currentAnimation = new Animation(10, sprites);
-        // sets the speed factor and anchor point for the animation
-        currentAnimation.setSpeedFactor(5);
-        currentAnimation.setAnchor(new Vector(0, 0));
-        // sets the size of the animation
-        currentAnimation.setWidth(1f);
-        currentAnimation.setHeight(1f);
-        // initializes the damagePoints and framePoints fields
+        for( int i = 0; i < 3; i++ )
+            for( int j = 0; j < 4; j++ )
+                sprites[j][i] = new Sprite("zelda/flameskull", 1.5f, 1.5f, this,
+                        new RegionOfInterest(i * 32, j*32, 32, 32));
+        if(getOrientation().equals(Orientation.UP))
+            currentAnimation = new Animation(6, sprites[0]);
+        else if(getOrientation().equals(Orientation.DOWN)) {
+            currentAnimation = new Animation(6, sprites[2]);
+        }
+        else if(getOrientation().equals(Orientation.RIGHT)){
+            currentAnimation = new Animation(6, sprites[3]);
+        }
+        else if(getOrientation().equals(Orientation.LEFT)){
+            currentAnimation = new Animation(6, sprites[1]);
+        }
         damagePoints = 2;
-        framePoints = 5;
+        currentAnimation.setSpeedFactor(3);
+        currentAnimation.setAnchor(new Vector(0, 0));
+        currentAnimation.setHeight(1.5f);
+        currentAnimation.setHeight(1.5f);
+    }
+    public int getDamage()
+    {
+        return damagePoints;
     }
 
     public String getTitle() {
-        return "zelda/fire";
+        return "zelda/flameskull";
     }
 
-    // updates the fire's animation and movement
-    // if the fire is consumed, it unregisters the fire and take it of game screen
     @Override
     public void update(float deltaTime) {
         currentAnimation.update(deltaTime);
@@ -67,15 +76,12 @@ public class Fire extends Projectile {
             getOwnerArea().unregisterActor(this);
     }
 
-    // draw the fire on the screen
     @Override
     public boolean draw(Canvas canvas) {
         currentAnimation.draw(canvas);
-        //fire.draw(canvas);
         return false;
     }
 
-    // returns a list with the fire's current main cell coordinates
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -92,32 +98,17 @@ public class Fire extends Projectile {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 
-    // if the cell is a wall or a hole, the fire is consumed it disappears from the screen game
     ICRogueFireInteractionHandler handler = new ICRogueFireInteractionHandler();
-    private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler
-    {
-        public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction)
-        {
-            switch(cell.getType())
-            {
+    private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler {
+        public void interactWith(ICRogueBehavior.ICRogueCell cell, boolean isCellInteraction) {
+            switch (cell.getType()) {
                 case WALL, HOLE -> consume();
             }
         }
-
-        // if the Turret interact with the Fire, the Turret dies
-        @Override
-        public void interactWith(Turret turret, boolean isCellInteraction)
+        public void interactWith(ICRoguePlayer other, boolean isCellInteraction)
         {
-            if(isCellInteraction)
-                turret.die();
-        }
-        public void interactWith(DarkLord boss, boolean isCellInteraction)
-        {
-            if(isCellInteraction){
-                consume();
-                boss.setHp(boss.getHp() - damagePoints);
-            }
+            consume();
+            other.setHp(other.getHp() - getDamage());
         }
     }
-
 }

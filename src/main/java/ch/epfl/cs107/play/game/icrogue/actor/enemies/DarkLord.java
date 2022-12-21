@@ -4,9 +4,12 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.SkullFire;
+import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
@@ -19,9 +22,9 @@ import java.util.Random;
 
 public class DarkLord extends ICRogueActor {
     private final Sprite[] sprites = new Sprite[4];
-    private final float COOLDOWN = 1.f;
-    private final float COOLDOWN_END = 1.f;
-    private final float ROTATION_COOLDOWN = 1.f;
+    private final float COOLDOWN = .25f;
+    private final float COOLDOWN_END = .25f;
+    private final float ROTATION_COOLDOWN = .5f;
     private boolean isAttacking = false;
     private final Sprite[][] spellSprites = new Sprite[4][3];
     private Animation spellAnimation;
@@ -30,6 +33,8 @@ public class DarkLord extends ICRogueActor {
     private float dtAttack, dtRotation, dtFinal;
     private boolean attackOnce = true, turnOnce = true;
     private int rotationCounter;
+    private boolean isAlive = true;
+    private int hp = 10;
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         for( int i = 0; i < 4; i++ )
@@ -40,9 +45,9 @@ public class DarkLord extends ICRogueActor {
                 spellSprites[j][i] = new Sprite("zelda/darkLord.spell", 1.5f, 1.5f, this,
                         new RegionOfInterest(i * 32, j*32, 32, 32));
         currentSprite = sprites[2];
-        currentSpriteLine = spellSprites[0];
-        spellAnimation = new Animation(10, currentSpriteLine);
-        spellAnimation.setSpeedFactor(5);
+        currentSpriteLine = spellSprites[2];
+        spellAnimation = new Animation(2, currentSpriteLine);
+        spellAnimation.setSpeedFactor(1);
         spellAnimation.setAnchor(new Vector(0, 0));
         spellAnimation.setHeight(1.5f);
         spellAnimation.setHeight(1.5f);
@@ -67,14 +72,18 @@ public class DarkLord extends ICRogueActor {
             currentSprite = sprites[1];
             currentSpriteLine = spellSprites[1];
         }
-        spellAnimation = new Animation(10, currentSpriteLine);
-        spellAnimation.setSpeedFactor(5);
+        spellAnimation = new Animation(2, currentSpriteLine);
+        spellAnimation.setSpeedFactor(1);
         spellAnimation.setAnchor(new Vector(0, 0));
         spellAnimation.setHeight(1.5f);
         spellAnimation.setHeight(1.5f);
+        turnOnce = false;
     }
     public void update(float deltaTime){
         super.update(deltaTime);
+        if(hp <= 0)
+            die();
+        spellAnimation.update(deltaTime);
         dtAttack += deltaTime;
         if(dtAttack >= COOLDOWN){
             if(rotationCounter == 0) {
@@ -121,6 +130,7 @@ public class DarkLord extends ICRogueActor {
     {
         isAttacking = false;
         attackOnce = true;
+        turnOnce = true;
         dtRotation = 0;
         dtAttack = 0;
         dtFinal = 0;
@@ -129,18 +139,41 @@ public class DarkLord extends ICRogueActor {
         DiscreteCoordinates randomPosition = new DiscreteCoordinates(x, y);
         orientate(Orientation.DOWN);
         changePosition(randomPosition);
+        turn();
     }
     public void attack(){
-        getOwnerArea().registerActor(new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates()));
+        getOwnerArea().registerActor(new SkullFire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates()));
         isAttacking = true;
         attackOnce = false;
     }
     @Override
     public boolean draw(Canvas canvas) {
-        if(isAttacking)
+        super.draw(canvas);
+        if(isAttacking && isAlive)
             spellAnimation.draw(canvas);
-        else
+        else if(isAlive)
             currentSprite.draw(canvas);
         return false;
+    }
+    public void die(){
+        isAlive = false;
+        getOwnerArea().unregisterActor(this);
+    }
+    public void setHp( int hp )
+    {
+        this.hp = hp;
+    }
+    public int getHp()
+    {
+        return hp;
+    }
+    public boolean isCellInteractable() {
+        return true;
+    }
+    public boolean takeCellSpace() {return false;}
+    @Override
+    public boolean isAlive(){return isAlive;}
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 }

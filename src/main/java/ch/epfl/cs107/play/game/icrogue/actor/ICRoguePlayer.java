@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
+import ch.epfl.cs107.play.game.icrogue.actor.enemies.DarkLord;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Coin;
@@ -12,6 +13,7 @@ import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Arrow;
 import ch.epfl.cs107.play.game.icrogue.actor.projectiles.Fire;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Cherry;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Staff;
+import ch.epfl.cs107.play.game.icrogue.actor.projectiles.SkullFire;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -291,11 +293,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         @Override
         public void interactWith(Arrow arrow, boolean isCellInteraction) {
         }
-
+        public void interactWith(SkullFire skullFire, boolean isCellInteraction) {
+        }
         @Override
         public void interactWith(Turret turret, boolean isCellInteraction) {
             if(isCellInteraction)
                 turret.die();
+        }
+        public void interactWith(DarkLord boss, boolean isCellInteraction){
+            if(isCellInteraction)
+                boss.setHp(boss.getHp() - 5);
         }
     }
     public boolean isAlive(){return isAlive;}
