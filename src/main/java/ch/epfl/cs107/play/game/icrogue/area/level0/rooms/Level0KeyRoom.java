@@ -14,14 +14,17 @@ public class Level0KeyRoom extends Level0ItemRoom {
         super(roomCoordinates);
         this.keyId = keyId;
         key = new Key(this, Orientation.DOWN, new DiscreteCoordinates(5, 5), keyId);
-        addItemToList(key);
+        addItemToList(key); // add the key object to the list of Item
     }
 
+    // register the key as an actor in the game
     public void createArea() {
         super.createArea();
         registerActor(key);
     }
 
+    // checks if the key has been collected
+    // if it has, unregister it as an actor
     @Override
    public void update(float deltaTime) {
         super.update(deltaTime);
@@ -30,6 +33,7 @@ public class Level0KeyRoom extends Level0ItemRoom {
         }
     }
 
+    // returns true if the key has been collected, false otherwise
     public boolean logic(){
         if(key.isCollected()){
             return true;}

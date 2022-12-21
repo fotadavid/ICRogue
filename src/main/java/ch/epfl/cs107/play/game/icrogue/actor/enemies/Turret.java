@@ -19,7 +19,6 @@ public class Turret extends ICRogueActor {
     private boolean isAlive = true;
     private final float COOLDOWN = 2.f;
     private Arrow arrow1, arrow2, arrow3, arrow4;
-    private boolean launch;
     private float dt;
     public Turret(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);

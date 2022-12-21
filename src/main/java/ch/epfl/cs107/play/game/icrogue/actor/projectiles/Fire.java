@@ -23,8 +23,8 @@ import java.util.List;
 
 public class Fire extends Projectile {
 
-    private int damagePoints;
-    private int framePoints;
+    private int damagePoints; // representing the amount of damage that the fire causes
+    private int framePoints; // representing value related to the fire's movement
     private Sprite fire;
     private Keyboard keyboard;
 
@@ -37,12 +37,16 @@ public class Fire extends Projectile {
         super(area, orientation, position);
         //fire = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(0, 0, 16, 16), new Vector(0, 0));
         for( int i = 0; i < 7; i++ )
+            // initializes each element of the array with a new Sprite object
             sprites[i] = new Sprite("zelda/fire", 1f, 1f, this, new RegionOfInterest(i * 16, 0, 16, 16));
         currentAnimation = new Animation(10, sprites);
+        // sets the speed factor and anchor point for the animation
         currentAnimation.setSpeedFactor(5);
         currentAnimation.setAnchor(new Vector(0, 0));
+        // sets the size of the animation
         currentAnimation.setWidth(1f);
         currentAnimation.setHeight(1f);
+        // initializes the damagePoints and framePoints fields
         damagePoints = 1;
         framePoints = 5;
     }
@@ -51,6 +55,8 @@ public class Fire extends Projectile {
         return "zelda/fire";
     }
 
+    // updates the fire's animation and movement
+    // if the fire is consumed, it unregisters the fire and take it of game screen
     @Override
     public void update(float deltaTime) {
         currentAnimation.update(deltaTime);
@@ -60,6 +66,7 @@ public class Fire extends Projectile {
             getOwnerArea().unregisterActor(this);
     }
 
+    // draw the fire on the screen
     @Override
     public boolean draw(Canvas canvas) {
         currentAnimation.draw(canvas);
@@ -67,6 +74,7 @@ public class Fire extends Projectile {
         return false;
     }
 
+    // returns a list with the fire's current main cell coordinates
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -82,6 +90,8 @@ public class Fire extends Projectile {
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
+
+    // if the cell is a wall or a hole, the fire is consumed it disappears from the screen game
     ICRogueFireInteractionHandler handler = new ICRogueFireInteractionHandler();
     private class ICRogueFireInteractionHandler implements ICRogueInteractionHandler
     {
@@ -92,6 +102,8 @@ public class Fire extends Projectile {
                 case WALL, HOLE -> consume();
             }
         }
+
+        // if the Turret interact with the Fire, the Turret dies
         @Override
         public void interactWith(Turret turret, boolean isCellInteraction)
         {

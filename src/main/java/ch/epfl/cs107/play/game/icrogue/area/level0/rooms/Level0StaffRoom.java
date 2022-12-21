@@ -13,13 +13,16 @@ public class Level0StaffRoom extends Level0ItemRoom{
         super(roomCoordinates);
         this.keyId = keyId;
         staff = new Staff(this, Orientation.DOWN, new DiscreteCoordinates(5, 5));
-        addItemToList(staff);
+        addItemToList(staff); // add the staff object to the list of Item
     }
+
+    // register the staff as an actor in the game
     public void createArea(){
         super.createArea();
         registerActor(staff);
     }
 
+    // returns true if the staff has been collected, false otherwise
     public boolean logic(){
         if(staff.isCollected()){
             return true;}

@@ -29,11 +29,13 @@ public abstract class Projectile extends ICRogueActor implements Interactor {
 
     public void update() {}
 
+    // if the projectile is consumed, it disappears from the screen game
     public void consume() {
         isConsumed = true;
         getOwnerArea().unregisterActor(this);
     }
 
+    // boolean indicating if it consumed or not
     public boolean isConsumed() {
         return isConsumed;
     }
@@ -43,6 +45,7 @@ public abstract class Projectile extends ICRogueActor implements Interactor {
         return false;
     }
 
+    // returns a list with the projectile's current main cell coordinates
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());

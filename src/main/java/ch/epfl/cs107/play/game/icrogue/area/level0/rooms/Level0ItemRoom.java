@@ -18,6 +18,8 @@ abstract class Level0ItemRoom extends Level0Room{
     public Level0ItemRoom(DiscreteCoordinates roomCoordinates) {
         super(roomCoordinates);
     }
+
+    // add Item to the Item list
     public void addItemToList(Item item){items.add(item);}
     public boolean isCollected() {
         return isCollected;
