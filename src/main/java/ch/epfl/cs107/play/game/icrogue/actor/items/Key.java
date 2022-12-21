@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
+// constructor class
 public class Key extends Item{
     private int keyId;
     private Sprite key;
