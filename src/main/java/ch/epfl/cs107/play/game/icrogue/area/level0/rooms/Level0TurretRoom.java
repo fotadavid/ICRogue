@@ -34,9 +34,6 @@ public class Level0TurretRoom extends Level0EnemyRoom{
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if(coin.isCollected()) {
-            unregisterActor(coin);
-        }
     }
 
 }
