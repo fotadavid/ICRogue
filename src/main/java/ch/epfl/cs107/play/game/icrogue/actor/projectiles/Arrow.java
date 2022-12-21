@@ -6,6 +6,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
+import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
@@ -28,7 +29,11 @@ public class Arrow extends Projectile{
     public Arrow(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         arrow = new Sprite("zelda/arrow", 1f, 1f, this, new RegionOfInterest(32*orientation.ordinal(), 0, 32, 32), new Vector(0, 0));
-        damagePoints = 1;
+        damagePoints = 2;
+    }
+    public int getDamage()
+    {
+        return damagePoints;
     }
     public String getTitle() {
         return "zelda/arrow";
@@ -73,6 +78,13 @@ public class Arrow extends Projectile{
             switch(cell.getType())
             {
                 case WALL, HOLE -> consume();
+            }
+        }
+        public void interactWith(ICRoguePlayer other, boolean isCellInteraction)
+        {
+            if(isCellInteraction) {
+                consume();
+                other.setHp(other.getHp() - getDamage());
             }
         }
     }

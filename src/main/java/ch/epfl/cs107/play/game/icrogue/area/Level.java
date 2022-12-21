@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.icrogue.area;
 import java.util.ArrayList;
 
+import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.icrogue.ICRogue;
 import ch.epfl.cs107.play.game.icrogue.RandomHelper;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0KeyRoom;
@@ -9,6 +10,7 @@ import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0StaffRoom;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0TurretRoom;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.game.icrogue.actor.connector.Connector;
+import ch.epfl.cs107.play.math.RegionOfInterest;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,11 +31,9 @@ public abstract class Level {
     private ICRogueRoom[][] map;
     /**Variable qui permet d'afficher "Game Over!" une seule fois*/
     private boolean GAME_OVER_ONCE = true;
-    private DiscreteCoordinates arrivalCoordinates;
     protected int bossKey;
-    private DiscreteCoordinates bossRoom;
+    protected DiscreteCoordinates bossRoom;
     protected String departureRoom;
-    private List<Connector> connectors;
     private static DiscreteCoordinates playerSpawnPosition = new DiscreteCoordinates(5, 15);
     private DiscreteCoordinates startPosition;
     private boolean randomMap;
@@ -53,21 +53,21 @@ public abstract class Level {
                 if (map[i][j] != null)
                     game.addArea(map[i][j]);
     }
-    public void checkGameStatus(){
+    public boolean checkGameStatus(){
         if (getMap()[bossRoom.x][bossRoom.y].logic() && GAME_OVER_ONCE){
             GAME_OVER_ONCE = false;
             System.out.println("You Won!");
+            getMap()[bossRoom.x][bossRoom.y].registerActor(new Foreground(getMap()[bossRoom.x][bossRoom.y],
+                    new RegionOfInterest(5, 5, 10000, 20000), "icrogue/WIN"));
+            return true;
         }
+        return false;
     }
-    public void setDepartureRoom(DiscreteCoordinates departure) {
-        departureRoom = map[departure.x][departure.y].getTitle();
-    }
-
     protected void setRoom(DiscreteCoordinates coords, ICRogueRoom room) {
         map[coords.x][coords.y] = room;
     }
-
-    protected void setRoomConnectorDestination(DiscreteCoordinates coords, String destination, ConnectorInRoom connector){
+    protected void setRoomConnectorDestination(DiscreteCoordinates coords, String destination,
+                                               ConnectorInRoom connector){
         map[coords.x][coords.y].getConnectors().get(connector.getIndex()).setDestination(destination);
     }
 
@@ -95,13 +95,12 @@ public abstract class Level {
         else generateRandomMap();
     }
     public abstract void generateFixedMap();
-    public void generateRandomMap(){
-        MapState[][] RoomPlacement = generateRandomRoomPlacement();
-    }
+    public abstract void generateRandomMap();
+    protected List<DiscreteCoordinates> availableLocations = new ArrayList<>();
     public MapState[][] generateRandomRoomPlacement() {
+        availableLocations.clear();
         List<Integer> toPlace;
         List<Integer> availablePlaces = new ArrayList<>();
-        List<DiscreteCoordinates> availableLocations = new ArrayList<>();
         int needToPlace;
         int roomsToPlace = 0;
         int freeSlots;
@@ -150,7 +149,8 @@ public abstract class Level {
                             break;
                         if (freeSlots < roomsToPlace)
                             needToPlace = RandomHelper.roomGenerator.nextInt(1, freeSlots + 1);
-                        else needToPlace = RandomHelper.roomGenerator.nextInt(1, roomsToPlace + 1);
+                        else
+                            needToPlace = RandomHelper.roomGenerator.nextInt(1, roomsToPlace + 1);
                         toPlace = RandomHelper.chooseKInList(needToPlace, availablePlaces);
                         for (int m = 0; m < needToPlace; m++)
                             switch (toPlace.get(m)) {
@@ -219,44 +219,6 @@ public abstract class Level {
             if(found)
                 break;
         }
-        setRoom(bossRoom, new Level0TurretRoom(bossRoom));
-        for( int i = 0; i < roomsDistribution.length; i++ ){
-            Collections.shuffle(availableLocations);
-            for( int j = 0; j < roomsDistribution[i]; j++ ){
-                DiscreteCoordinates location = availableLocations.get(j);
-                switch (i){
-                    case 0:
-                        setRoom(location, new Level0StaffRoom(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 1:
-                        setRoom(location, new Level0TurretRoom(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 2:
-                        bossKey = RandomHelper.roomGenerator.nextInt(0, 80);
-                        setRoom(location, new Level0KeyRoom(location, bossKey));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 3:
-                        setRoom(location, new Level0Room(location));
-                        startPosition = location;
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                    case 4:
-                        setRoom(location, new Level0Room(location));
-                        availableLocations.remove(j);
-                        RoomPlacement[location.x][location.y] = MapState.CREATED;
-                        break;
-                }
-            }
-        }
-        departureRoom = "icrogue/level0" + startPosition.x + startPosition.y;
-        setUpConnector(RoomPlacement);
         return RoomPlacement;
     }
     abstract protected void setUpConnector(MapState[][] mapState);
