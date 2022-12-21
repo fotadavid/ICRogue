@@ -54,7 +54,7 @@ public class DarkLord extends ICRogueActor {
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
-    public void turn(){
+    private void turn(){
         if(getOrientation().equals(Orientation.UP)) {
             currentSprite = sprites[0];
             currentSpriteLine = spellSprites[0];
@@ -144,7 +144,7 @@ public class DarkLord extends ICRogueActor {
         changePosition(randomPosition);
         turn();
     }
-    public void attack(){
+    private void attack(){
         getOwnerArea().registerActor(new SkullFire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates()));
         isAttacking = true;
         attackOnce = false;

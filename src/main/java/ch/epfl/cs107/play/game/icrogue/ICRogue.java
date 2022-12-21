@@ -1,40 +1,32 @@
 package ch.epfl.cs107.play.game.icrogue;
 
-import ch.epfl.cs107.play.game.Playable;
-import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRoguePlayer;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
 import ch.epfl.cs107.play.game.icrogue.area.Level0;
 import ch.epfl.cs107.play.game.icrogue.area.Level;
 import ch.epfl.cs107.play.game.icrogue.area.level0.rooms.Level0Room;
-import ch.epfl.cs107.play.game.icrogue.area.ICRogueRoom;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
-import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
-import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import java.util.Collections;
 import java.util.List;
 
 public class ICRogue extends AreaGame {
     public final static float CAMERA_SCALE_FACTOR = 13.f;
     public final static String ROOM = "icrogue/Level0Room";
-    private ICRoguePlayer player;
-    private boolean YOU_LOST_ONCE = true;
-    private boolean PLAYER_LEAVES_ONCE = true;
+    private ICRoguePlayer player; // instance of ICRogue Player
+    private boolean YOU_LOST_ONCE = true; // boolean variable that only let you loose once
+    private boolean PLAYER_LEAVES_ONCE = true; // boolean variable that leaves the player of the game only once
     private final String[] areas = {ROOM};
     private float dt = 0;
     private final float GAME_OVER_TIME = 4.f;
 
-    private int areaIndex;
     /**
      * Add all the areas
      */
-    ICRogueRoom currentRoom;
     Level currentLevel;
 
     // initializes the game by creating a new instance of Level0 and generating a fixed map

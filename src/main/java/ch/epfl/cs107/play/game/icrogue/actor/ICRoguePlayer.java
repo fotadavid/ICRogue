@@ -307,7 +307,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         public void interactWith(DarkLord boss, boolean isCellInteraction){
             if(isCellInteraction) {
                 setHp(getHp() - 1);
-                //if( getCurrentMainCellCoordinates())
+                if( getCurrentMainCellCoordinates().x > 1 && getCurrentMainCellCoordinates().x < 8 )
+                    orientate(Orientation.LEFT);
+                else if( getCurrentMainCellCoordinates().y > 1 && getCurrentMainCellCoordinates().y < 8 )
+                    orientate(Orientation.UP);
+                else if( (getCurrentMainCellCoordinates().x == 1 || getCurrentMainCellCoordinates().x == 8) && getCurrentMainCellCoordinates().y == 8 )
+                    orientate(Orientation.DOWN);
+                else if( (getCurrentMainCellCoordinates().x == 1 || getCurrentMainCellCoordinates().x == 8) && getCurrentMainCellCoordinates().y == 0 )
+                    orientate(Orientation.UP);
                 move(MOVE_DURATION);
             }
         }

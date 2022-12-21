@@ -15,6 +15,7 @@ import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.window.Window;
 
 public class ICRogueBehavior extends AreaBehavior {
+    // enum that represents the different types of cells that can exist
     public enum ICRogueCellType{
         //https://stackoverflow.com/questions/25761438/understanding-bufferedimage-getrgb-output-values
         NONE(0, false),
@@ -23,15 +24,19 @@ public class ICRogueBehavior extends AreaBehavior {
         HOLE(-65536, true),;
 
         final int type;
-        final boolean isWalkable;
+        final boolean isWalkable; // boolean indicating whether the cell is walkable or not
 
+        // constructor for the enum members
         ICRogueCellType(int type, boolean isWalkable){
             this.type = type;
             this.isWalkable = isWalkable;
         }
 
+        // converts an integer representation of a color to the corresponding enum member
         public static ICRogueCellType toType(int type){
             for(ICRogueCellType ict : ICRogueCellType.values()){
+                // if the integer representation of the color matches
+                // the type field of the enum member, return the enum member
                 if(ict.type == type)
                     return ict;
             }
@@ -70,33 +75,41 @@ public class ICRogueBehavior extends AreaBehavior {
         @Override
         protected boolean canLeave(Interactable entity) {
             return true;
-        }
+        } // by default, entity can leave any cell
         public ICRogueCellType getType(){
             return type;
-        }
+        } //returns the type of the cell
         @Override
         protected boolean canEnter(Interactable entity) {
+            // loops through all the entities in the cell
             for(Interactable object : entities) {
+                // if the entity is a SkullFire or Fire and the object is a DarkLord,
+                // returns whether the cell is walkable or not
                 if((entity.getClass().equals(SkullFire.class) || entity.getClass().equals(Fire.class)) && object.getClass().equals(DarkLord.class))
                     return type.isWalkable;
                 if (object.takeCellSpace() && object.getClass() != ICRoguePlayer.class) {
                     return false;
                 }
             }
+            // if the entity is not a SkullFire or Fire,
+            // or if there are no other entities in the cell that take up space,
+            // return whether the cell is walkable or not
             return type.isWalkable;
         }
 
-
+        // by default, cells are interactable
         @Override
         public boolean isCellInteractable() {
             return true;
         }
 
+        // by default, cells are not view interactable
         @Override
         public boolean isViewInteractable() {
             return false;
         }
 
+        // casts the AreaInteractionVisitor to an ICRogueInteractionHandler and calls the interactWith method
         @Override
         public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
             ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
