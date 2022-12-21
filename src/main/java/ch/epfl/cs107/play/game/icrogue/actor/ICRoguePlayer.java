@@ -20,6 +20,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,6 +37,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite currentsprite;
 
     private Fire fire;
+    private float hp;
     private boolean isAlive = true;
 
     /// Animation duration in frame number
@@ -48,6 +50,10 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private Sprite[] movementArray1, movementArray2, movementArray3, movementArray4;
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
+        this.hp = 10;
+        message = new TextGraphics(Integer.toString((int) hp), 0.4f, Color.BLUE);
+        message.setParent(this);
+        message.setAnchor(new Vector(-0.3f, 0.1f));
         //bas
         sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
         sprite11 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 0, 16, 32), new Vector(.15f, -.15f));
@@ -98,7 +104,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         turnIfPressed(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
         turnIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         fireBall();
-        if(!isAlive && UNREGISTER_ONCE) {
+        message.setText(Integer.toString((int)hp));
+        if(hp <= 0 && UNREGISTER_ONCE) {
             UNREGISTER_ONCE = false;
             gameOver();
             getOwnerArea().unregisterActor(this);
@@ -107,6 +114,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
     }
     public boolean draw(Canvas canvas) {
+        message.draw(canvas);
         currentsprite.draw(canvas);
         return false;
     }
@@ -172,11 +180,18 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         resetMotion();
     }
-
+    public void setHp(float hp)
+    {
+        this.hp = hp;
+    }
+    public float getHp()
+    {
+        return hp;
+    }
 
     @Override
     public boolean takeCellSpace() {
-        return false;
+        return true;
     }
 
     @Override
@@ -259,8 +274,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
 
         @Override
         public void interactWith(Arrow arrow, boolean isCellInteraction) {
-            if(isCellInteraction)
-                isAlive = false;
         }
 
         @Override
@@ -277,6 +290,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     }
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICRogueInteractionHandler) v).interactWith(this, isCellInteraction);
     }
 
 }
