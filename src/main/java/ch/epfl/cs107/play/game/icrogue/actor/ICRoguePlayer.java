@@ -28,15 +28,17 @@ import java.util.Collections;
 import java.util.List;
 
 public class ICRoguePlayer extends ICRogueActor implements Interactor {
+    // boolean variables used to keep track of conditions
     private boolean StaffCollection = false;
     private boolean CoinCollection = false;
     private boolean UNREGISTER_ONCE = true;
     private boolean isTransitioning = false;
     private String destination;
     private final List<Integer> keyChain = new ArrayList<>();
+
+    // variable to display a message on screen
     private TextGraphics message;
     private Sprite currentsprite;
-
     private float dt = 0;
     private float hp;
 
@@ -85,6 +87,11 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         currentsprite = sprite3;
     }
 
+    // updates the status of the game
+    // allows to move, turn, throw fireball, walk faster
+    // increase the speed of the player if the coin has been collected during a certain time
+    // remove the player of the screen game and throw the GameOver when the player lost
+    // updates the HP of the player when he looses some hp
     @Override
     public void update(float deltaTime) {
 
@@ -120,11 +127,16 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         message.setText("HP :" + hp);
 
     }
+    // this method draws the player on the screen
+    // and also the TextGraphics message (his HP)
     public boolean draw(Canvas canvas) {
         message.draw(canvas);
         currentsprite.draw(canvas);
         return false;
     }
+
+    // allows the player to throw fireball when the button X is pressed
+    // he can do so only if the Staff has been collected
     public void fireBall() {
         Keyboard keyboard = getOwnerArea().getKeyboard();
         Button b;
@@ -135,6 +147,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         }
     }
 
+    // methods which changes the speed to 3, of the player when the coin has been collected
     public void energyBoost() {
         if (CoinCollection) {
              MOVE_DURATION = 3;
@@ -147,6 +160,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      * @param b (Button): button corresponding to the given orientation, not null
      */
 
+    // allows the player to move on the map
     private void moveIfPressed(Orientation orientation, Button b){
         if(b.isDown()) {
             if (!isDisplacementOccurs()) {
@@ -159,6 +173,8 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             arrayIndex = 0;
     }
 
+    // allows the player to animate when he turns and walks, this means that the player changes sprites based on his
+    // orientation
     private void turnIfPressed(Orientation orientation, Button b) {
         if( getOrientation() == Orientation.LEFT )
             currentsprite = movementArray4[arrayIndex];
@@ -193,6 +209,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         setCurrentPosition(position.toVector());
         resetMotion();
     }
+    // setter and getter of the HP of the player
     public void setHp(float hp)
     {
         this.hp = hp;
@@ -237,6 +254,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         return true;
     }
 
+    // allows the player to have ViewInteraction when the button W is pressed
     @Override
     public boolean wantsViewInteraction() {
         Keyboard  keyboard = getOwnerArea().getKeyboard();
@@ -247,6 +265,13 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
     }
+    // has an interactWith method for each of these object types, which is called when the player interacts with the object
+    // method for each object type depends on the value of isCellInteraction
+    // the interactWith method for a Connector object checks whether isCellInteraction
+    // is true and whether the player is not already transitioning between cells
+    // the interactWith method for a DarkLord object simply reduces the player's
+    // hit points by 1 and moves the player in a specific direction if isCellInteraction is true
+
     private class ICRoguePlayerInteractionHandler implements ICRogueInteractionHandler{
         public void interactWith(Cherry cherry, boolean isCellInteraction)
         {
@@ -315,7 +340,9 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             }
         }
     }
+    // boolean returning if the player is Alive
     public boolean isAlive(){return isAlive;}
+    // method to display the Game Over when the player is dead, has lost
     public void gameOver(){
         Foreground gameOver = new Foreground(getOwnerArea(), new RegionOfInterest(5, 5, 1200, 2000),
                 "icrogue/GameOverRestart");
