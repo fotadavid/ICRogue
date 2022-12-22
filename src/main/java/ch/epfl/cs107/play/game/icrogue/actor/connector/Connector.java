@@ -29,6 +29,8 @@ public class Connector extends AreaEntity implements Interactable {
     }
     public ConnectorType getType(){return type;}
     private ConnectorType type = ConnectorType.INVISIBLE;
+
+    // constructor with the sprites of the different type of connectors
     public Connector(Area area, Orientation orientation, DiscreteCoordinates coordinates, String destination) {
         super(area, orientation, coordinates);
         this.destination = destination;

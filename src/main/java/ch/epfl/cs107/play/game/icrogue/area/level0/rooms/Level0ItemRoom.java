@@ -1,10 +1,8 @@
 package ch.epfl.cs107.play.game.icrogue.area.level0.rooms;
 
-import ch.epfl.cs107.play.game.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.game.icrogue.actor.items.Item;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.window.Canvas;
+
 
 import java.util.ArrayList;
 import java.util.List;

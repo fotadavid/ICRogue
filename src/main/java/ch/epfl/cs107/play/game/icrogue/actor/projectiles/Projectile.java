@@ -4,7 +4,6 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactor;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.icrogue.actor.ICRogueActor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.window.Button;
 
 import java.util.Collections;
 import java.util.List;

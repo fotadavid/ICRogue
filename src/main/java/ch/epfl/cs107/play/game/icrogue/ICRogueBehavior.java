@@ -85,8 +85,11 @@ public class ICRogueBehavior extends AreaBehavior {
             for(Interactable object : entities) {
                 // if the entity is a SkullFire or Fire and the object is a DarkLord,
                 // returns whether the cell is walkable or not
-                if((entity.getClass().equals(SkullFire.class) || entity.getClass().equals(Fire.class)) && object.getClass().equals(DarkLord.class))
+                if((entity.getClass().equals(SkullFire.class) || entity.getClass().equals(Fire.class))
+                        && object.getClass().equals(DarkLord.class))
                     return type.isWalkable;
+                // if there are other entities in the cell that take up space,
+                // but are not ICRoguePlayer entities, the entity cannot enter the cell
                 if (object.takeCellSpace() && object.getClass() != ICRoguePlayer.class) {
                     return false;
                 }

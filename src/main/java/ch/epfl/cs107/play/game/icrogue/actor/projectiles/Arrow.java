@@ -11,9 +11,7 @@ import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
-import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
-import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.Collections;
 import java.util.List;

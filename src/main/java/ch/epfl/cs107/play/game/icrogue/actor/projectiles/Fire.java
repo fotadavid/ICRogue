@@ -9,7 +9,6 @@ import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.icrogue.ICRogueBehavior;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.DarkLord;
 import ch.epfl.cs107.play.game.icrogue.actor.enemies.Turret;
-import ch.epfl.cs107.play.game.icrogue.actor.items.Key;
 import ch.epfl.cs107.play.game.icrogue.handler.ICRogueInteractionHandler;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RegionOfInterest;
