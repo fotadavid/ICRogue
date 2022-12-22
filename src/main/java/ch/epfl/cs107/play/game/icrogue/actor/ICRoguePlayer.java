@@ -33,18 +33,14 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     private boolean UNREGISTER_ONCE = true;
     private boolean isTransitioning = false;
     private String destination;
-    private DiscreteCoordinates arrivalCoordinates;
-    private List<Integer> keyChain = new ArrayList<Integer>();
+    private final List<Integer> keyChain = new ArrayList<>();
     private TextGraphics message;
-    private Sprite sprite1, sprite11, sprite12, sprite13, sprite2, sprite21, sprite22, sprite23,  sprite3,  sprite31,  sprite32, sprite33, sprite4, sprite41, sprite42, sprite43;
     private Sprite currentsprite;
 
-    private Fire fire;
     private float dt = 0;
-    private final float SPEED_TIME = 4.f;
     private float hp;
 
-    private boolean isAlive = true;
+    private final boolean isAlive = true;
 
     /// Animation duration in frame number
    private int MOVE_DURATION = 7;
@@ -53,35 +49,38 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
      *
      */
     private int arrayIndex = 0;
-    private Sprite[] movementArray1, movementArray2, movementArray3, movementArray4;
+    private final Sprite[] movementArray1;
+    private final Sprite[] movementArray2;
+    private final Sprite[] movementArray3;
+    private final Sprite[] movementArray4;
     public ICRoguePlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String spriteName) {
         super(owner, orientation, coordinates);
         this.hp = 10;
         message = new TextGraphics("HP :" + hp, 1f, Color.WHITE, null, 1, true, false, new Vector(7.1f, 9.4f));
 
         //bas
-        sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
-        sprite11 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 0, 16, 32), new Vector(.15f, -.15f));
-        sprite12 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 0, 16, 32), new Vector(.15f, -.15f));
-        sprite13 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 0, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite1 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 0, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite11 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 0, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite12 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 0, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite13 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 0, 16, 32), new Vector(.15f, -.15f));
         movementArray1 = new Sprite[]{sprite1, sprite11, sprite12, sprite13};
         // droite
-        sprite2 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 32, 16, 32), new Vector(.15f,-.15f));
-        sprite21 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 32, 16, 32), new Vector(.15f,-.15f));
-        sprite22 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 32, 16, 32), new Vector(.15f,-.15f));
-        sprite23 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 32, 16, 32), new Vector(.15f,-.15f));
+        Sprite sprite2 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 32, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite21 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 32, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite22 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 32, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite23 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 32, 16, 32), new Vector(.15f, -.15f));
         movementArray2 = new Sprite[]{sprite2, sprite21, sprite22, sprite23};
         // haut
-        sprite3 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 64, 16, 32), new Vector(.15f,-.15f));
-        sprite31 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 64, 16, 33), new Vector(.15f,-.15f));
-        sprite32 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 64, 16, 32), new Vector(.15f,-.15f));
-        sprite33 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 64, 16, 32), new Vector(.15f,-.15f));
+        Sprite sprite3 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 64, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite31 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 64, 16, 33), new Vector(.15f, -.15f));
+        Sprite sprite32 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 64, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite33 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 64, 16, 32), new Vector(.15f, -.15f));
         movementArray3 = new Sprite[]{sprite3, sprite31, sprite32, sprite33};
         // gauche
-        sprite4 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(0, 96, 16, 32), new Vector(.15f,-.15f));
-        sprite41 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(16, 96, 16, 32), new Vector(.15f,-.15f));
-        sprite42 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(32, 96, 16, 32), new Vector(.15f,-.15f));
-        sprite43 = new Sprite("zelda/player", .75f, 1.5f, this,new RegionOfInterest(48, 96, 16, 32), new Vector(.15f,-.15f));
+        Sprite sprite4 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(0, 96, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite41 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(16, 96, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite42 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(32, 96, 16, 32), new Vector(.15f, -.15f));
+        Sprite sprite43 = new Sprite("zelda/player", .75f, 1.5f, this, new RegionOfInterest(48, 96, 16, 32), new Vector(.15f, -.15f));
         movementArray4 = new Sprite[]{sprite4, sprite41, sprite42, sprite43};
         currentsprite = sprite3;
     }
@@ -103,6 +102,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         energyBoost();
         if(CoinCollection)
             dt += deltaTime;
+        float SPEED_TIME = 4.f;
         if(dt >= SPEED_TIME) {
             MOVE_DURATION = 7;
             CoinCollection = false;
@@ -130,7 +130,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
         Button b;
         b = keyboard.get(Keyboard.X);
         if (b.isPressed() && StaffCollection) {
-            fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
+            Fire fire = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates());
             getOwnerArea().registerActor(fire);
         }
     }
@@ -241,10 +241,7 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
     public boolean wantsViewInteraction() {
         Keyboard  keyboard = getOwnerArea().getKeyboard();
         Button b = keyboard.get(keyboard.W);
-        if( b.isDown() )
-            return true;
-        else
-            return false;
+        return b.isDown();
     }
     public ICRoguePlayerInteractionHandler handler = new ICRoguePlayerInteractionHandler();
     public void interactWith(Interactable other, boolean isCellInteraction) {
@@ -284,7 +281,6 @@ public class ICRoguePlayer extends ICRogueActor implements Interactor {
             if(isCellInteraction && !isDisplacementOccurs())
             {
                 destination = connector.getDestination();
-                arrivalCoordinates = new DiscreteCoordinates(0, 2);
                 isTransitioning = true;
             }
             if(!keyChain.isEmpty())
